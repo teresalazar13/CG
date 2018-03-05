@@ -4,6 +4,10 @@
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
 #include <math.h>
+#include <time.h>
+#include <vector>
+
+using namespace std;
 
 #define BLUE     0.0, 0.0, 1.0, 1.0
 #define RED		 1.0, 0.0, 0.0, 1.0
@@ -13,6 +17,11 @@
 #define BLACK    0.0, 0.0, 0.0, 1.0
 #define PI		 3.14159
 
+struct Can {
+  int color_index;
+};
+
+vector <Can> CANS;
 
 GLfloat tam = 2.0;
 static GLfloat vertices[]={
@@ -136,6 +145,20 @@ void drawEixos() {
 	glEnd();
 }
 
+//==================================== Lata
+void createCan(int x, int y, int z) {
+  float colours[6][4] = { BLUE, RED, YELLOW, GREEN, WHITE, BLACK };
+  srand (time(NULL));
+  int random_index = rand() % 5 + 0;
+
+  glColor4f(colours[random_index][0], colours[random_index][1], colours[random_index][2], colours[random_index][3]);
+  glPushMatrix();
+    glTranslated(x, y, z);
+    GLUquadricObj* yy = gluNewQuadric();
+    gluCylinder(yy, 2, 2, 4, 100, 100);
+  glPopMatrix();
+}
+
 
 void drawScene(){
 	//=================================================== Qual o lado ?
@@ -147,15 +170,11 @@ void drawScene(){
   glRotated(ROTATE, 1, 0, 0);
   glTranslated(0, -2, 0);
 
-
-	//==================================== Cilindro amarelo
-	glColor4f(YELLOW);
-	glPushMatrix();
-    glTranslated(0, 4, 0);
-    GLUquadricObj* y = gluNewQuadric();
-		gluCylinder(y, 2, 2, 4, 100, 100);
-	glPopMatrix();
+  for (int i = 0; i < 4; i++) {
+    createCan(0, i * 5, 0);
+  }
 }
+
 
 void display(void){
 
