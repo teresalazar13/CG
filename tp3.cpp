@@ -6,6 +6,8 @@
 #include <math.h>
 #include <time.h>
 #include <vector>
+#include "RgbImage.h"
+
 
 using namespace std;
 
@@ -105,10 +107,45 @@ GLfloat LOOK_Z = 0;
 GLfloat ROTATE = 0;
 
 
+//------------------------------------------------------------ Texturas
+GLuint  texture[1];
+GLuint  tex;
+RgbImage imag;
+
+
+void textures() {
+
+  // Textura Coca cola
+
+  // Cria o identificador de uma textura
+	glGenTextures(1, &texture[0]);
+	glBindTexture(GL_TEXTURE_2D, texture[0]);
+
+  // Especifica a forma de mapeamento (combinação de imagem e textura)
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+
+  // Propriedades
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+  // Construir textura
+  imag.LoadBmpFile("mesa.bmp");
+	glTexImage2D(GL_TEXTURE_2D, 0, 3,
+	imag.GetNumCols(),
+		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+		imag.ImageData()
+  );
+}
+
+
 void inicializa(void) {
-  glClearColor(BLACK);		//Apagar
-  glEnable(GL_DEPTH_TEST);	//Profundidade
-  glShadeModel(GL_SMOOTH);	//Interpolacao de cores
+  glClearColor(BLACK);		// Apagar
+  glEnable(GL_DEPTH_TEST);	// Profundidade
+  glShadeModel(GL_SMOOTH);	// Interpolacao de cores
+  textures();
+  glEnable(GL_TEXTURE_2D);  // Ativar modo textura
 
   glVertexPointer(3, GL_FLOAT, 0, vertices); //Vertex arrays
   glEnableClientState(GL_VERTEX_ARRAY);
@@ -145,7 +182,8 @@ void drawEixos() {
 
 //==================================== Lata
 void createCan(int x, int y, int z) {
-  // create colors matrice
+
+  // create colors matrix
   float colours[6][4] = {
     BLUE,
     RED,
@@ -160,13 +198,21 @@ void createCan(int x, int y, int z) {
   srand (time(NULL));
   int random_index = rand() % 5 + 0;
 
-  glColor4f(colours[random_index][0], colours[random_index][1], colours[random_index][2], colours[random_index][3]);
+  //glColor4f(colours[random_index][0], colours[random_index][1], colours[random_index][2], colours[random_index][3]);
+
+  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D, texture[0]);
 
   glPushMatrix();
     glTranslated(x, y, z);
     GLUquadricObj* yy = gluNewQuadric();
+    gluQuadricDrawStyle ( yy, GLU_FILL   );
+    gluQuadricNormals   ( yy, GLU_SMOOTH );
+    gluQuadricTexture   ( yy, GL_TRUE    );
     gluCylinder(yy, 2, 2, 4, 100, 100);
   glPopMatrix();
+
+  glDisable(GL_TEXTURE_2D);
 }
 
 
@@ -220,55 +266,55 @@ void keyboard(unsigned char key, int x, int y){
       glutPostRedisplay();
       break;
 
-      // afasta do centro ao inicio
+    // afasta do centro ao inicio
     case 'p':
       rVisao += 1;
       glutPostRedisplay();
       break;
 
-      // utilizador para baixo
+    // utilizador para baixo
     case 'u':
       TRANSLATE_USER_Y -= 1;
       glutPostRedisplay();
       break;
 
-      // utilizador para cima
+    // utilizador para cima
     case 'i':
       TRANSLATE_USER_Y += 1;
       glutPostRedisplay();
       break;
 
-      // modificar o ponto para onde o utilizar esta a olha no eixo dos x
+    // modificar o ponto para onde o utilizar esta a olha no eixo dos x
     case 'q':
       LOOK_X += -1;
       glutPostRedisplay();
       break;
 
-      // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
+    // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
     case 'w':
       LOOK_X += 1;
       glutPostRedisplay();
       break;
 
-      // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
+    // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
     case 'e':
       LOOK_Y += -1;
       glutPostRedisplay();
       break;
 
-      // modificar o ponto para onde o utilizar esta a olha no eixo dos yy
+    // modificar o ponto para onde o utilizar esta a olha no eixo dos yy
     case 'r':
       LOOK_Y += 1;
       glutPostRedisplay();
       break;
 
-      // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
+    // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
     case 't':
       LOOK_Z += -1;
       glutPostRedisplay();
       break;
 
-      // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
+    // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
     case 'y':
       LOOK_Z += 1;
       glutPostRedisplay();
