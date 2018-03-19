@@ -88,7 +88,7 @@ static GLuint     direita[] = {4, 7, 6, 5};
 
 
 //------------------------------------------------------------ Sistema Coordenadas + objectos
-GLint		wScreen=800, hScreen=600;		//.. janela (pixeis)
+GLint		wScreen=1600, hScreen=1200;		//.. janela (pixeis)
 GLfloat		xC=10.0, yC=10.0, zC=10.0;		//.. Mundo  (unidades mundo)
 
 //------------------------------------------------------------ Observador
@@ -111,6 +111,15 @@ GLfloat ROTATE = 0;
 GLuint  texture[1];
 GLuint  tex;
 RgbImage imag;
+
+GLint    msec = 100;					//.. definicao do timer (actualizacao)
+GLfloat  angRotate = 0;
+GLfloat  incAngRotate = 5;
+
+GLfloat   mesaP[]= {4, 0, 10};
+GLfloat   mesa=3.0;
+
+
 
 
 void textures() {
@@ -180,6 +189,16 @@ void drawEixos() {
   glEnd();
 }
 
+void drawBoundaries() {
+  GLUquadricObj*  y = gluNewQuadric ( );
+
+	glPushMatrix();
+    glTranslated(0, 4, 0);
+    glScalef(20, 20, 20);
+		glutWireCube(1);
+	glPopMatrix();
+}
+
 //==================================== Lata
 void createCan(int x, int y, int z) {
 
@@ -205,6 +224,7 @@ void createCan(int x, int y, int z) {
 
   glPushMatrix();
     glTranslated(x, y, z);
+    glRotatef (angRotate, -1, 0, 0);
     GLUquadricObj* yy = gluNewQuadric();
     gluQuadricDrawStyle ( yy, GLU_FILL   );
     gluQuadricNormals   ( yy, GLU_SMOOTH );
@@ -247,8 +267,9 @@ void display(void){
 
   //================================================================= No modificar
 
-  //Objectos
-  drawEixos();
+  // Objectos
+  // drawEixos();
+  drawBoundaries();
   drawScene();
 
   //Actualizacao
@@ -370,6 +391,12 @@ void teclasNotAscii(int key, int x, int y){
   glutPostRedisplay();
 }
 
+void Timer(int value){
+	angRotate = angRotate + incAngRotate;
+	glutPostRedisplay();
+	glutTimerFunc(msec, Timer, 1);
+}
+
 
 
 int main(int argc, char** argv){
@@ -385,6 +412,7 @@ int main(int argc, char** argv){
   glutSpecialFunc(teclasNotAscii);
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
+  glutTimerFunc(msec, Timer, 1);			//    :controlar o tempo de actualizao do Desenha
 
   glutMainLoop();
 
