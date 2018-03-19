@@ -12,12 +12,12 @@
 using namespace std;
 
 #define BLUE     0.0, 0.0, 1.0, 1.0
-#define RED	 1.0, 0.0, 0.0, 1.0
+#define RED	     1.0, 0.0, 0.0, 1.0
 #define YELLOW	 1.0, 1.0, 0.0, 1.0
 #define GREEN    0.0, 1.0, 0.0, 1.0
 #define WHITE    1.0, 1.0, 1.0, 1.0
 #define BLACK    0.0, 0.0, 0.0, 1.0
-#define PI		 3.14159
+#define PI		   3.14159
 
 struct Can {
   int color_index;
@@ -112,13 +112,12 @@ GLuint  texture[1];
 GLuint  tex;
 RgbImage imag;
 
-GLint    msec = 100;					//.. definicao do timer (actualizacao)
+GLint    msec = 1;					//.. definicao do timer (actualizacao)
 GLfloat  angRotate = 0;
 GLfloat  incAngRotate = 5;
 
-GLfloat   mesaP[]= {4, 0, 10};
-GLfloat   mesa=3.0;
-
+GLfloat   translateCan = 0.0;
+GLfloat   incTranslateCan = 0.0005;
 
 
 
@@ -193,7 +192,6 @@ void drawBoundaries() {
   GLUquadricObj*  y = gluNewQuadric ( );
 
 	glPushMatrix();
-    glTranslated(0, 4, 0);
     glScalef(20, 20, 20);
 		glutWireCube(1);
 	glPopMatrix();
@@ -223,13 +221,16 @@ void createCan(int x, int y, int z) {
   glBindTexture(GL_TEXTURE_2D, texture[0]);
 
   glPushMatrix();
+    y = (y + translateCan) * 5;
     glTranslated(x, y, z);
     glRotatef (angRotate, -1, 0, 0);
+    printf("%f %f\n", translateCan, angRotate);
     GLUquadricObj* yy = gluNewQuadric();
     gluQuadricDrawStyle ( yy, GLU_FILL   );
     gluQuadricNormals   ( yy, GLU_SMOOTH );
     gluQuadricTexture   ( yy, GL_TRUE    );
-    gluCylinder(yy, 2, 2, 4, 100, 100);
+    // void gluCylinder(	GLUquadric* quad, GLdouble base, GLdouble top, GLdouble height, GLint slices, GLint stacks);
+    gluCylinder(yy, 0.5, 0.5, 1.75, 100, 100);
   glPopMatrix();
 
   glDisable(GL_TEXTURE_2D);
@@ -246,17 +247,16 @@ void drawScene(){
   glTranslated(0, -2, 0);
 
   for (int i = 0; i < 4; i++) {
-    createCan(0, i * 5, 0);
+    createCan(0, i, 0);
   }
 }
 
 
 void display(void){
 
-  //================================================================= Apaga ecran/profundidade
+  // Apaga ecra/profundidade
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-  //================================================================= No modificar
   glViewport (0, 0, wScreen, hScreen);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -265,18 +265,15 @@ void display(void){
   glLoadIdentity();
   gluLookAt(rVisao*cos(aVisao), obsP[1] + TRANSLATE_USER_Y, rVisao*sin(aVisao), LOOK_X, LOOK_Y, LOOK_Z, 0, 1, 0);
 
-  //================================================================= No modificar
-
   // Objectos
   // drawEixos();
   drawBoundaries();
   drawScene();
 
-  //Actualizacao
+  // Actualizacao
   glutSwapBuffers();
 }
 
-//======================================================= EVENTOS
 void keyboard(unsigned char key, int x, int y){
 
   switch (key) {
@@ -392,11 +389,13 @@ void teclasNotAscii(int key, int x, int y){
 }
 
 void Timer(int value){
+  printf("%f\n", translateCan);
 	angRotate = angRotate + incAngRotate;
+  translateCan = translateCan + incTranslateCan;
 	glutPostRedisplay();
 	glutTimerFunc(msec, Timer, 1);
+  glutTimerFunc(msec, Timer, 1);
 }
-
 
 
 int main(int argc, char** argv){
@@ -405,14 +404,14 @@ int main(int argc, char** argv){
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
   glutInitWindowSize (wScreen, hScreen);
   glutInitWindowPosition (300, 100);
-  glutCreateWindow ("{jh,pjmm}@dei.uc.pt|       |FaceVisivel:'f'|      |Observador:'SETAS'|        |Andar-'a/s'|        |Rodar -'e/d'| ");
+  glutCreateWindow ("FaceVisivel:'f'|      |Observador:'SETAS'|        |Andar-'a/s'|        |Rodar -'e/d'| ");
 
   inicializa();
 
   glutSpecialFunc(teclasNotAscii);
   glutDisplayFunc(display);
   glutKeyboardFunc(keyboard);
-  glutTimerFunc(msec, Timer, 1);			//    :controlar o tempo de actualizao do Desenha
+  glutTimerFunc(msec, Timer, 1);
 
   glutMainLoop();
 
