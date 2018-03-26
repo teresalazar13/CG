@@ -92,8 +92,8 @@ GLint		wScreen=1600, hScreen=1200;		//.. janela (pixeis)
 GLfloat		xC=10.0, yC=10.0, zC=10.0;		//.. Mundo  (unidades mundo)
 
 //------------------------------------------------------------ Observador
-GLfloat  rVisao = 10, aVisao=0.5*PI, incVisao=0.05;
-GLfloat  obsP[] ={rVisao*cos(aVisao), 3, rVisao*sin(aVisao)};
+GLfloat  rVisao = 18, aVisao=0.5*PI, incVisao=0.05;
+GLfloat  obsP[] = {rVisao * cos(aVisao), 3, rVisao * sin(aVisao)};
 GLfloat  angZoom=90;
 GLfloat  incZoom=3;
 
@@ -112,12 +112,12 @@ GLuint  texture[1];
 GLuint  tex;
 RgbImage imag;
 
-GLint    msec = 1;					//.. definicao do timer (actualizacao)
 GLfloat  angRotate = 0;
 GLfloat  incAngRotate = 5;
 
+GLint    msec = 1;					//.. definicao do timer (actualizacao)
 GLfloat   translateCan = 0.0;
-GLfloat   incTranslateCan = 0.0005;
+GLfloat   incTranslateCan = 0.005;
 
 
 
@@ -169,7 +169,7 @@ void drawEixos() {
   // Eixo X
   glColor4f(RED);
   glBegin(GL_LINES);
-  glVertex3i( 0, 0, 0);
+  glVertex3i(0, 0, 0);
   glVertex3i(10, 0, 0);
   glEnd();
 
@@ -183,8 +183,8 @@ void drawEixos() {
   // Eixo Z
   glColor4f(BLUE);
   glBegin(GL_LINES);
-  glVertex3i( 0, 0, 0);
-  glVertex3i( 0, 0, 10);
+  glVertex3i(0, 0, 0);
+  glVertex3i(0, 0, 10);
   glEnd();
 }
 
@@ -221,7 +221,9 @@ void createCan(int x, int y, int z) {
   glBindTexture(GL_TEXTURE_2D, texture[0]);
 
   glPushMatrix();
-    y = (y + translateCan) * 5;
+    y = translateCan;
+    x = x * 2;
+
     glTranslated(x, y, z);
     glRotatef (angRotate, -1, 0, 0);
     printf("%f %f\n", translateCan, angRotate);
@@ -246,8 +248,8 @@ void drawScene(){
   glRotated(ROTATE, 1, 0, 0);
   glTranslated(0, -2, 0);
 
-  for (int i = 0; i < 4; i++) {
-    createCan(0, i, 0);
+  for (int i = 0; i < 5; i++) {
+    createCan(i, 0, 0);
   }
 }
 
@@ -389,12 +391,14 @@ void teclasNotAscii(int key, int x, int y){
 }
 
 void Timer(int value){
-  printf("%f\n", translateCan);
+  printf("oi %f\n", translateCan);
 	angRotate = angRotate + incAngRotate;
+  if (translateCan > 5 || translateCan < -5) {
+    incTranslateCan = incTranslateCan * -1;
+  }
   translateCan = translateCan + incTranslateCan;
 	glutPostRedisplay();
 	glutTimerFunc(msec, Timer, 1);
-  glutTimerFunc(msec, Timer, 1);
 }
 
 
