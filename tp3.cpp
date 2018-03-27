@@ -113,12 +113,11 @@ GLuint  tex;
 RgbImage imag;
 
 GLfloat  angRotate = 0;
-GLfloat  incAngRotate = 5;
+GLfloat  incAngRotate = 1;
 
 GLint    msec = 1;					//.. definicao do timer (actualizacao)
-GLfloat   translateCan = 0.0;
-GLfloat   incTranslateCan = 0.005;
-
+GLfloat   translateCanY[] = {0.0, 1.0, 2.0, 3.0, 4.0};
+GLfloat   incTranslateCanY[] = {0.1, 0.1, 0.1, 0.1, 0.1};
 
 
 void textures() {
@@ -198,7 +197,7 @@ void drawBoundaries() {
 }
 
 //==================================== Lata
-void createCan(int x, int y, int z) {
+void createCans() {
 
   // create colors matrix
   float colours[6][4] = {
@@ -220,22 +219,29 @@ void createCan(int x, int y, int z) {
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, texture[0]);
 
-  glPushMatrix();
-    y = translateCan;
-    x = x * 2;
+  angRotate = angRotate + incAngRotate;
 
-    glTranslated(x, y, z);
-    glRotatef (angRotate, -1, 0, 0);
-    printf("%f %f\n", translateCan, angRotate);
-    GLUquadricObj* yy = gluNewQuadric();
-    gluQuadricDrawStyle ( yy, GLU_FILL   );
-    gluQuadricNormals   ( yy, GLU_SMOOTH );
-    gluQuadricTexture   ( yy, GL_TRUE    );
-    // void gluCylinder(	GLUquadric* quad, GLdouble base, GLdouble top, GLdouble height, GLint slices, GLint stacks);
-    gluCylinder(yy, 0.5, 0.5, 1.75, 100, 100);
-  glPopMatrix();
 
-  glDisable(GL_TEXTURE_2D);
+  for (int i = 0; i < 5; i++) {
+    if (translateCanY[i] > 5 || translateCanY[i] < -5) {
+      incTranslateCanY[i] = incTranslateCanY[i] * -1;
+    }
+    translateCanY[i] = translateCanY[i] + incTranslateCanY[i];
+    printf("%f\n", translateCanY[i]);
+
+    glPushMatrix();
+      glTranslated(i, translateCanY[i], 0);
+      glRotatef (angRotate, -1, 0, 0);
+      GLUquadricObj* yy = gluNewQuadric();
+      gluQuadricDrawStyle ( yy, GLU_FILL   );
+      gluQuadricNormals   ( yy, GLU_SMOOTH );
+      gluQuadricTexture   ( yy, GL_TRUE    );
+      // void gluCylinder(	GLUquadric* quad, GLdouble base, GLdouble top, GLdouble height, GLint slices, GLint stacks);
+      gluCylinder(yy, 0.5, 0.5, 1.75, 100, 100);
+    glPopMatrix();
+
+    glDisable(GL_TEXTURE_2D);
+  }
 }
 
 
@@ -248,9 +254,7 @@ void drawScene(){
   glRotated(ROTATE, 1, 0, 0);
   glTranslated(0, -2, 0);
 
-  for (int i = 0; i < 5; i++) {
-    createCan(i, 0, 0);
-  }
+  createCans();
 }
 
 
@@ -391,12 +395,6 @@ void teclasNotAscii(int key, int x, int y){
 }
 
 void Timer(int value){
-  printf("oi %f\n", translateCan);
-	angRotate = angRotate + incAngRotate;
-  if (translateCan > 5 || translateCan < -5) {
-    incTranslateCan = incTranslateCan * -1;
-  }
-  translateCan = translateCan + incTranslateCan;
 	glutPostRedisplay();
 	glutTimerFunc(msec, Timer, 1);
 }
