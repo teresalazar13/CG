@@ -116,8 +116,15 @@ GLfloat  angRotate = 0;
 GLfloat  incAngRotate = 1;
 
 GLint    msec = 1;					//.. definicao do timer (actualizacao)
+
+GLfloat   translateCanX[] = {1.0, 3.0, 4.0, 5.0, 3.0};
+GLfloat   incTranslateCanX[] = {0.1, 0.1, 0.1, 0.1, 0.1};
+
 GLfloat   translateCanY[] = {0.0, 1.0, 2.0, 3.0, 4.0};
 GLfloat   incTranslateCanY[] = {0.1, 0.1, 0.1, 0.1, 0.1};
+
+GLfloat   translateCanZ[] = {4.0, 2.0, 2.0, 3.0, 1.0};
+GLfloat   incTranslateCanZ[] = {0.1, 0.1, 0.1, 0.1, 0.1};
 
 
 void textures() {
@@ -221,16 +228,24 @@ void createCans() {
 
   angRotate = angRotate + incAngRotate;
 
-
   for (int i = 0; i < 5; i++) {
     if (translateCanY[i] > 5 || translateCanY[i] < -5) {
       incTranslateCanY[i] = incTranslateCanY[i] * -1;
     }
     translateCanY[i] = translateCanY[i] + incTranslateCanY[i];
-    printf("%f\n", translateCanY[i]);
+
+    if (translateCanX[i] > 5 || translateCanX[i] < -5) {
+      incTranslateCanX[i] = incTranslateCanX[i] * -1;
+    }
+    translateCanX[i] = translateCanX[i] + incTranslateCanX[i];
+
+    if (translateCanZ[i] > 5 || translateCanZ[i] < -5) {
+      incTranslateCanZ[i] = incTranslateCanZ[i] * -1;
+    }
+    translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
 
     glPushMatrix();
-      glTranslated(i, translateCanY[i], 0);
+      glTranslated(translateCanX[i], translateCanY[i], translateCanZ[i]);
       glRotatef (angRotate, -1, 0, 0);
       GLUquadricObj* yy = gluNewQuadric();
       gluQuadricDrawStyle ( yy, GLU_FILL   );
