@@ -114,20 +114,22 @@ RgbImage imag;
 
 GLint    msec = 1;					//.. definicao do timer (actualizacao)
 
-GLfloat  angRotateX[] = {0, 90, 40, 200, 250};
-GLfloat  angRotateY[] = {300, 90, 40, 30, 320};
-GLfloat  angRotateZ[] = {30, 50, 130, 240, 350};
+GLfloat  angRotateX[50] = {0};
+GLfloat  angRotateY[50] = {0};
+GLfloat  angRotateZ[50] = {0};
 
 GLfloat  incAngRotate = 1;
 
-GLfloat   translateCanX[] = {1.0, 3.0, 4.0, 5.0, 3.0};
-GLfloat   incTranslateCanX[] = {0.1, 0.1, 0.1, 0.1, 0.1};
+GLfloat   translateCanX[50] = {0};
+GLfloat   incTranslateCanX[50] = {0.1};
 
-GLfloat   translateCanY[] = {0.0, 1.0, 2.0, 3.0, 4.0};
-GLfloat   incTranslateCanY[] = {0.1, 0.1, 0.1, 0.1, 0.1};
+GLfloat   translateCanY[50] = {0};
+GLfloat   incTranslateCanY[50] = {0.1};
 
-GLfloat   translateCanZ[] = {4.0, 2.0, 2.0, 3.0, 1.0};
-GLfloat   incTranslateCanZ[] = {0.1, 0.1, 0.1, 0.1, 0.1};
+GLfloat   translateCanZ[50] = {0};
+GLfloat   incTranslateCanZ[50] = {0.1};
+
+int NUMBER_OF_CANS = 1;
 
 
 void textures() {
@@ -206,6 +208,33 @@ void drawBoundaries() {
 	glPopMatrix();
 }
 
+void generateCan() {
+  if (NUMBER_OF_CANS < 50) {
+    srand (time(NULL));
+    int angRotateX_ = rand() % 360 + 0;
+    int angRotateY_ = rand() % 360 + 0;
+    int angRotateZ_ = rand() % 360 + 0;
+
+    angRotateX[NUMBER_OF_CANS] = angRotateX_;
+    angRotateY[NUMBER_OF_CANS] = angRotateY_;
+    angRotateZ[NUMBER_OF_CANS] = angRotateZ_;
+
+    int translateCanX_ = rand() % 10 - 5;
+    int translateCanY_ = rand() % 10 - 5;
+    int translateCanZ_ = rand() % 10 - 5;
+
+    translateCanX[NUMBER_OF_CANS] = translateCanX_;
+    incTranslateCanX[NUMBER_OF_CANS] = 0.1;
+
+    translateCanY[NUMBER_OF_CANS] = translateCanY_;
+    incTranslateCanY[NUMBER_OF_CANS] = 0.1;
+
+    translateCanZ[NUMBER_OF_CANS] = translateCanZ_;
+    incTranslateCanZ[NUMBER_OF_CANS] = 0.1;
+    NUMBER_OF_CANS++;
+  }
+}
+
 //==================================== Lata
 void createCans() {
 
@@ -231,7 +260,7 @@ void createCans() {
 
 
 
-  for (int i = 0; i < 5; i++) {
+  for (int i = 0; i < NUMBER_OF_CANS; i++) {
     angRotateX[i] = angRotateX[i] + incAngRotate;
     angRotateY[i] = angRotateY[i] + incAngRotate;
     angRotateZ[i] = angRotateZ[i] + incAngRotate;
@@ -386,6 +415,11 @@ void keyboard(unsigned char key, int x, int y){
 
     case 'f':
       ROTATE += 10;
+      glutPostRedisplay();
+      break;
+
+    case 'z':
+      generateCan();
       glutPostRedisplay();
       break;
 
