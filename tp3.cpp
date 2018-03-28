@@ -129,6 +129,10 @@ GLfloat   incTranslateCanY[50] = {0.1};
 GLfloat   translateCanZ[50] = {0};
 GLfloat   incTranslateCanZ[50] = {0.1};
 
+int coloursCan[50] = {BLUE};
+
+float colours[6][4] = {BLUE, RED, YELLOW, GREEN, WHITE, BLACK};
+
 int NUMBER_OF_CANS = 1;
 
 
@@ -209,6 +213,7 @@ void drawBoundaries() {
 }
 
 void generateCan() {
+
   if (NUMBER_OF_CANS < 50) {
     srand (time(NULL));
     int angRotateX_ = rand() % 360 + 0;
@@ -231,6 +236,9 @@ void generateCan() {
 
     translateCanZ[NUMBER_OF_CANS] = translateCanZ_;
     incTranslateCanZ[NUMBER_OF_CANS] = 0.1;
+
+    int random_index = rand() % 5 + 0;
+    coloursCan[NUMBER_OF_CANS] = random_index;
     NUMBER_OF_CANS++;
   }
 }
@@ -238,29 +246,18 @@ void generateCan() {
 //==================================== Lata
 void createCans() {
 
-  // create colors matrix
-  float colours[6][4] = {
-    BLUE,
-    RED,
-    YELLOW,
-    GREEN,
-    WHITE,
-    BLACK
-  };
-
 
   // get random index
   srand (time(NULL));
-  int random_index = rand() % 5 + 0;
 
-  //glColor4f(colours[random_index][0], colours[random_index][1], colours[random_index][2], colours[random_index][3]);
-
+  /* TEXTURES
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, texture[0]);
-
-
+  */
 
   for (int i = 0; i < NUMBER_OF_CANS; i++) {
+    glColor4f(colours[coloursCan[i]][0], colours[coloursCan[i]][1], colours[coloursCan[i]][2], colours[coloursCan[i]][3]);
+
     angRotateX[i] = angRotateX[i] + incAngRotate;
     angRotateY[i] = angRotateY[i] + incAngRotate;
     angRotateZ[i] = angRotateZ[i] + incAngRotate;
