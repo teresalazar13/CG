@@ -112,10 +112,13 @@ GLuint  texture[1];
 GLuint  tex;
 RgbImage imag;
 
-GLfloat  angRotate = 0;
-GLfloat  incAngRotate = 1;
-
 GLint    msec = 1;					//.. definicao do timer (actualizacao)
+
+GLfloat  angRotateX[] = {0, 90, 40, 200, 250};
+GLfloat  angRotateY[] = {300, 90, 40, 30, 320};
+GLfloat  angRotateZ[] = {30, 50, 130, 240, 350};
+
+GLfloat  incAngRotate = 1;
 
 GLfloat   translateCanX[] = {1.0, 3.0, 4.0, 5.0, 3.0};
 GLfloat   incTranslateCanX[] = {0.1, 0.1, 0.1, 0.1, 0.1};
@@ -226,9 +229,13 @@ void createCans() {
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, texture[0]);
 
-  angRotate = angRotate + incAngRotate;
+
 
   for (int i = 0; i < 5; i++) {
+    angRotateX[i] = angRotateX[i] + incAngRotate;
+    angRotateY[i] = angRotateY[i] + incAngRotate;
+    angRotateZ[i] = angRotateZ[i] + incAngRotate;
+
     if (translateCanY[i] > 5 || translateCanY[i] < -5) {
       incTranslateCanY[i] = incTranslateCanY[i] * -1;
     }
@@ -246,7 +253,10 @@ void createCans() {
 
     glPushMatrix();
       glTranslated(translateCanX[i], translateCanY[i], translateCanZ[i]);
-      glRotatef (angRotate, -1, 0, 0);
+      glRotatef (angRotateX[i], 1, 0, 0);
+      glRotatef (angRotateY[i], 0, 1, 0);
+      glRotatef (angRotateZ[i], 0, 0, 1);
+
       GLUquadricObj* yy = gluNewQuadric();
       gluQuadricDrawStyle ( yy, GLU_FILL   );
       gluQuadricNormals   ( yy, GLU_SMOOTH );
