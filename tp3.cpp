@@ -11,13 +11,13 @@
 
 using namespace std;
 
-#define BLUE     0.0, 0.0, 1.0, 1.0
-#define RED	     1.0, 0.0, 0.0, 1.0
-#define YELLOW	 1.0, 1.0, 0.0, 1.0
-#define GREEN    0.0, 1.0, 0.0, 1.0
-#define WHITE    1.0, 1.0, 1.0, 1.0
-#define BLACK    0.0, 0.0, 0.0, 1.0
-#define PI		   3.14159
+#define BLUE      0.0, 0.0, 1.0, 1.0
+#define RED	  1.0, 0.0, 0.0, 1.0
+#define YELLOW	  1.0, 1.0, 0.0, 1.0
+#define GREEN     0.0, 1.0, 0.0, 1.0
+#define WHITE     1.0, 1.0, 1.0, 1.0
+#define BLACK     0.0, 0.0, 0.0, 1.0
+#define PI	  3.14159
 
 struct Can {
   int color_index;
@@ -81,6 +81,10 @@ static GLfloat cor[]={
   1.0,  0.0, 1.0,	// 11
 };
 
+//------------------------------------------------------------ Texturas
+GLuint  texture[3];
+RgbImage imag;
+
 //=========================================================== FACES DA MESA
 static GLuint     cima[] = {8, 11, 10, 9};
 static GLuint     esquerda[] = {0, 1, 2, 3};
@@ -106,12 +110,6 @@ GLfloat LOOK_Z = 0;
 
 GLfloat ROTATE = 0;
 
-
-//------------------------------------------------------------ Texturas
-GLuint  texture[1];
-GLuint  tex;
-RgbImage imag;
-
 GLint    msec = 1;					//.. definicao do timer (actualizacao)
 
 GLfloat  angRotateX[50] = {0};
@@ -136,38 +134,36 @@ float colours[6][4] = {BLUE, RED, YELLOW, GREEN, WHITE, BLACK};
 int NUMBER_OF_CANS = 1;
 
 
-void textures() {
+void setupTextures() {
+  // Gerar identificador da textura
+  glGenTextures(1, &texture[0]);
 
-  // Textura Coca cola
-
-  // Cria o identificador de uma textura
-	glGenTextures(1, &texture[0]);
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
+  // Criar objeto dessa textura
+  glBindTexture(GL_TEXTURE_2D, texture[0]);
 
   // Especifica a forma de mapeamento (combinação de imagem e textura)
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
   // Propriedades
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
   // Construir textura
   imag.LoadBmpFile("mesa.bmp");
-	glTexImage2D(GL_TEXTURE_2D, 0, 3,
-	imag.GetNumCols(),
-		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-		imag.ImageData()
+  glTexImage2D(GL_TEXTURE_2D, 0, 3,
+    imag.GetNumCols(),
+    imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+    imag.ImageData()
   );
 }
-
 
 void inicializa(void) {
   glClearColor(BLACK);		// Apagar
   glEnable(GL_DEPTH_TEST);	// Profundidade
   glShadeModel(GL_SMOOTH);	// Interpolacao de cores
-  textures();
+  setupTextures();
   glEnable(GL_TEXTURE_2D);  // Ativar modo textura
 
   glVertexPointer(3, GL_FLOAT, 0, vertices); //Vertex arrays
@@ -177,8 +173,6 @@ void inicializa(void) {
   glColorPointer(3, GL_FLOAT, 0, cor);
   glEnableClientState(GL_COLOR_ARRAY);
 }
-
-
 
 void drawEixos() {
   // Eixo X
@@ -206,10 +200,10 @@ void drawEixos() {
 void drawBoundaries() {
   GLUquadricObj*  y = gluNewQuadric ( );
 
-	glPushMatrix();
-    glScalef(20, 20, 20);
-		glutWireCube(1);
-	glPopMatrix();
+  glPushMatrix();
+  glScalef(20, 20, 20);
+  glutWireCube(1);
+  glPopMatrix();
 }
 
 void generateCan() {
@@ -250,10 +244,7 @@ void createCans() {
   // get random index
   srand (time(NULL));
 
-  /* TEXTURES
   glEnable(GL_TEXTURE_2D);
-  glBindTexture(GL_TEXTURE_2D, texture[0]);
-  */
 
   for (int i = 0; i < NUMBER_OF_CANS; i++) {
     glColor4f(colours[coloursCan[i]][0], colours[coloursCan[i]][1], colours[coloursCan[i]][2], colours[coloursCan[i]][3]);
@@ -277,6 +268,7 @@ void createCans() {
     }
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
 
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
     glPushMatrix();
       glTranslated(translateCanX[i], translateCanY[i], translateCanZ[i]);
       glRotatef (angRotateX[i], 1, 0, 0);
@@ -347,7 +339,7 @@ void keyboard(unsigned char key, int x, int y){
       glutPostRedisplay();
       break;
 
-    // utilizador para baixo
+     // utilizador para baixo
     case 'u':
       TRANSLATE_USER_Y -= 1;
       glutPostRedisplay();
@@ -451,8 +443,8 @@ void teclasNotAscii(int key, int x, int y){
 }
 
 void Timer(int value){
-	glutPostRedisplay();
-	glutTimerFunc(msec, Timer, 1);
+  glutPostRedisplay();
+  glutTimerFunc(msec, Timer, 1);
 }
 
 
@@ -462,7 +454,7 @@ int main(int argc, char** argv){
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
   glutInitWindowSize (wScreen, hScreen);
   glutInitWindowPosition (300, 100);
-  glutCreateWindow ("FaceVisivel:'f'|      |Observador:'SETAS'|        |Andar-'a/s'|        |Rodar -'e/d'| ");
+  glutCreateWindow ("");
 
   inicializa();
 
