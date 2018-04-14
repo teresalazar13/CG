@@ -19,11 +19,7 @@ using namespace std;
 #define BLACK     0.0, 0.0, 0.0, 1.0
 #define PI	  3.14159
 
-struct Can {
-  int color_index;
-};
-
-vector <Can> CANS;
+int cans[50];
 
 GLfloat tam = 2.0;
 static GLfloat vertices[]={
@@ -134,25 +130,50 @@ float colours[6][4] = {BLUE, RED, YELLOW, GREEN, WHITE, BLACK};
 int NUMBER_OF_CANS = 1;
 
 
+int generate_random_int_number(int max) {
+  srand (time(NULL));
+  return (rand() % max + 0);
+}
+
+
 void setupTextures() {
-  // Gerar identificador da textura
   glGenTextures(1, &texture[0]);
-
-  // Criar objeto dessa textura
   glBindTexture(GL_TEXTURE_2D, texture[0]);
-
-  // Especifica a forma de mapeamento (combinação de imagem e textura)
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-
-  // Propriedades
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
-  // Construir textura
   imag.LoadBmpFile("mesa.bmp");
-  glTexImage2D(GL_TEXTURE_2D, 0, 3,
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, 
+    imag.GetNumCols(),
+    imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+    imag.ImageData()
+  );
+
+  glGenTextures(1, &texture[1]);
+  glBindTexture(GL_TEXTURE_2D, texture[1]);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  imag.LoadBmpFile("chao.bmp");
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, 
+    imag.GetNumCols(),
+    imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+    imag.ImageData()
+  );
+
+  glGenTextures(1, &texture[2]);
+  glBindTexture(GL_TEXTURE_2D, texture[2]);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  imag.LoadBmpFile("lata.bmp");
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, 
     imag.GetNumCols(),
     imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
     imag.ImageData()
@@ -201,18 +222,19 @@ void drawBoundaries() {
   GLUquadricObj*  y = gluNewQuadric ( );
 
   glPushMatrix();
-  glScalef(20, 20, 20);
-  glutWireCube(1);
+    glScalef(20, 20, 20);
+    glutWireCube(1);
   glPopMatrix();
 }
 
 void generateCan() {
+  int random_index;
+  srand (time(NULL));
 
   if (NUMBER_OF_CANS < 50) {
-    srand (time(NULL));
-    int angRotateX_ = rand() % 360 + 0;
-    int angRotateY_ = rand() % 360 + 0;
-    int angRotateZ_ = rand() % 360 + 0;
+    int angRotateX_ = generate_random_int_number(360);
+    int angRotateY_ = generate_random_int_number(360);
+    int angRotateZ_ = generate_random_int_number(360);
 
     angRotateX[NUMBER_OF_CANS] = angRotateX_;
     angRotateY[NUMBER_OF_CANS] = angRotateY_;
@@ -231,24 +253,18 @@ void generateCan() {
     translateCanZ[NUMBER_OF_CANS] = translateCanZ_;
     incTranslateCanZ[NUMBER_OF_CANS] = 0.1;
 
-    int random_index = rand() % 5 + 0;
-    coloursCan[NUMBER_OF_CANS] = random_index;
+    random_index = generate_random_int_number(3);
+    printf("%d\n", random_index);
+    cans[NUMBER_OF_CANS] = random_index;
     NUMBER_OF_CANS++;
   }
 }
 
 //==================================== Lata
 void createCans() {
-
-
-  // get random index
-  srand (time(NULL));
-
   glEnable(GL_TEXTURE_2D);
 
   for (int i = 0; i < NUMBER_OF_CANS; i++) {
-    glColor4f(colours[coloursCan[i]][0], colours[coloursCan[i]][1], colours[coloursCan[i]][2], colours[coloursCan[i]][3]);
-
     angRotateX[i] = angRotateX[i] + incAngRotate;
     angRotateY[i] = angRotateY[i] + incAngRotate;
     angRotateZ[i] = angRotateZ[i] + incAngRotate;
@@ -268,7 +284,7 @@ void createCans() {
     }
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
 
-    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBindTexture(GL_TEXTURE_2D, texture[cans[i]]);
     glPushMatrix();
       glTranslated(translateCanX[i], translateCanY[i], translateCanZ[i]);
       glRotatef (angRotateX[i], 1, 0, 0);
@@ -283,8 +299,8 @@ void createCans() {
       gluCylinder(yy, 0.5, 0.5, 1.75, 100, 100);
     glPopMatrix();
 
-    glDisable(GL_TEXTURE_2D);
   }
+  glDisable(GL_TEXTURE_2D);
 }
 
 
