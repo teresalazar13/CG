@@ -11,19 +11,15 @@
 
 using namespace std;
 
-#define BLUE     0.0, 0.0, 1.0, 1.0
-#define RED	     1.0, 0.0, 0.0, 1.0
-#define YELLOW	 1.0, 1.0, 0.0, 1.0
-#define GREEN    0.0, 1.0, 0.0, 1.0
-#define WHITE    1.0, 1.0, 1.0, 1.0
-#define BLACK    0.0, 0.0, 0.0, 1.0
-#define PI		   3.14159
+#define BLUE      0.0, 0.0, 1.0, 1.0
+#define RED	  1.0, 0.0, 0.0, 1.0
+#define YELLOW	  1.0, 1.0, 0.0, 1.0
+#define GREEN     0.0, 1.0, 0.0, 1.0
+#define WHITE     1.0, 1.0, 1.0, 1.0
+#define BLACK     0.0, 0.0, 0.0, 1.0
+#define PI	  3.14159
 
-struct Can {
-  int color_index;
-};
-
-vector <Can> CANS;
+int cans[50];
 
 GLfloat tam = 2.0;
 static GLfloat vertices[]={
@@ -81,6 +77,10 @@ static GLfloat cor[]={
   1.0,  0.0, 1.0,	// 11
 };
 
+//------------------------------------------------------------ Texturas
+GLuint  texture[3];
+RgbImage imag;
+
 //=========================================================== FACES DA MESA
 static GLuint     cima[] = {8, 11, 10, 9};
 static GLuint     esquerda[] = {0, 1, 2, 3};
@@ -106,12 +106,6 @@ GLfloat LOOK_Z = 0;
 
 GLfloat ROTATE = 0;
 
-
-//------------------------------------------------------------ Texturas
-GLuint  texture[1];
-GLuint  tex;
-RgbImage imag;
-
 GLint    msec = 1;					//.. definicao do timer (actualizacao)
 
 GLfloat  angRotateX[50] = {0};
@@ -136,38 +130,60 @@ float colours[6][4] = {BLUE, RED, YELLOW, GREEN, WHITE, BLACK};
 int NUMBER_OF_CANS = 1;
 
 
-void textures() {
-
-  // Textura Coca cola
-
-  // Cria o identificador de uma textura
-	glGenTextures(1, &texture[0]);
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
-
-  // Especifica a forma de mapeamento (combinação de imagem e textura)
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-
-  // Propriedades
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-
-  // Construir textura
-  imag.LoadBmpFile("mesa.bmp");
-	glTexImage2D(GL_TEXTURE_2D, 0, 3,
-	imag.GetNumCols(),
-		imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-		imag.ImageData()
-  );
+int generate_random_int_number(int max) {
+  srand (time(NULL));
+  return (rand() % max + 0);
 }
 
+void setupTextures() {
+  glGenTextures(1, &texture[0]);
+  glBindTexture(GL_TEXTURE_2D, texture[0]);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+  imag.LoadBmpFile("mesa.bmp");
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, 
+    imag.GetNumCols(),
+    imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+    imag.ImageData()
+  );
+
+  glGenTextures(1, &texture[1]);
+  glBindTexture(GL_TEXTURE_2D, texture[1]);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  imag.LoadBmpFile("chao.bmp");
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, 
+    imag.GetNumCols(),
+    imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+    imag.ImageData()
+  );
+
+  glGenTextures(1, &texture[2]);
+  glBindTexture(GL_TEXTURE_2D, texture[2]);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  imag.LoadBmpFile("lata.bmp");
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, 
+    imag.GetNumCols(),
+    imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+    imag.ImageData()
+  );
+}
 
 void inicializa(void) {
   glClearColor(BLACK);		// Apagar
   glEnable(GL_DEPTH_TEST);	// Profundidade
   glShadeModel(GL_SMOOTH);	// Interpolacao de cores
-  textures();
+  setupTextures();
   glEnable(GL_TEXTURE_2D);  // Ativar modo textura
 
   glVertexPointer(3, GL_FLOAT, 0, vertices); //Vertex arrays
@@ -177,8 +193,6 @@ void inicializa(void) {
   glColorPointer(3, GL_FLOAT, 0, cor);
   glEnableClientState(GL_COLOR_ARRAY);
 }
-
-
 
 void drawEixos() {
   // Eixo X
@@ -206,24 +220,25 @@ void drawEixos() {
 void drawBoundaries() {
   GLUquadricObj*  y = gluNewQuadric ( );
 
-	glPushMatrix();
+  glPushMatrix();
     glScalef(20, 20, 20);
-		glutWireCube(1);
-	glPopMatrix();
+    glutWireCube(1);
+  glPopMatrix();
 }
 
 void generateCan() {
+  int random_index;
 
   if (NUMBER_OF_CANS < 50) {
-    srand (time(NULL));
-    int angRotateX_ = rand() % 360 + 0;
-    int angRotateY_ = rand() % 360 + 0;
-    int angRotateZ_ = rand() % 360 + 0;
+    int angRotateX_ = generate_random_int_number(360);
+    int angRotateY_ = generate_random_int_number(360);
+    int angRotateZ_ = generate_random_int_number(360);
 
     angRotateX[NUMBER_OF_CANS] = angRotateX_;
     angRotateY[NUMBER_OF_CANS] = angRotateY_;
     angRotateZ[NUMBER_OF_CANS] = angRotateZ_;
 
+    srand (time(NULL));
     int translateCanX_ = rand() % 10 - 5;
     int translateCanY_ = rand() % 10 - 5;
     int translateCanZ_ = rand() % 10 - 5;
@@ -237,27 +252,17 @@ void generateCan() {
     translateCanZ[NUMBER_OF_CANS] = translateCanZ_;
     incTranslateCanZ[NUMBER_OF_CANS] = 0.1;
 
-    int random_index = rand() % 5 + 0;
-    coloursCan[NUMBER_OF_CANS] = random_index;
+    random_index = generate_random_int_number(3);
+    cans[NUMBER_OF_CANS] = random_index;
     NUMBER_OF_CANS++;
   }
 }
 
 //==================================== Lata
 void createCans() {
-
-
-  // get random index
-  srand (time(NULL));
-
-  /* TEXTURES
   glEnable(GL_TEXTURE_2D);
-  glBindTexture(GL_TEXTURE_2D, texture[0]);
-  */
 
   for (int i = 0; i < NUMBER_OF_CANS; i++) {
-    glColor4f(colours[coloursCan[i]][0], colours[coloursCan[i]][1], colours[coloursCan[i]][2], colours[coloursCan[i]][3]);
-
     angRotateX[i] = angRotateX[i] + incAngRotate;
     angRotateY[i] = angRotateY[i] + incAngRotate;
     angRotateZ[i] = angRotateZ[i] + incAngRotate;
@@ -277,22 +282,34 @@ void createCans() {
     }
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
 
+    glBindTexture(GL_TEXTURE_2D, texture[cans[i]]);
+    GLUquadricObj* yy = gluNewQuadric();
+
+    // create cylinder
     glPushMatrix();
       glTranslated(translateCanX[i], translateCanY[i], translateCanZ[i]);
       glRotatef (angRotateX[i], 1, 0, 0);
       glRotatef (angRotateY[i], 0, 1, 0);
       glRotatef (angRotateZ[i], 0, 0, 1);
 
-      GLUquadricObj* yy = gluNewQuadric();
       gluQuadricDrawStyle ( yy, GLU_FILL   );
       gluQuadricNormals   ( yy, GLU_SMOOTH );
       gluQuadricTexture   ( yy, GL_TRUE    );
       // void gluCylinder(	GLUquadric* quad, GLdouble base, GLdouble top, GLdouble height, GLint slices, GLint stacks);
       gluCylinder(yy, 0.5, 0.5, 1.75, 100, 100);
+
+      // top of cylinder
+      glPushMatrix();
+        glTranslated(0.0f, 0.0f, 1.75);
+        gluDisk(yy, 0.0f, 0.5, 100, 100);
+      glPopMatrix();
+
+      //glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
+      gluDisk(yy, 0.0f, 0.5, 100, 100);
     glPopMatrix();
 
-    glDisable(GL_TEXTURE_2D);
   }
+  glDisable(GL_TEXTURE_2D);
 }
 
 
@@ -347,7 +364,7 @@ void keyboard(unsigned char key, int x, int y){
       glutPostRedisplay();
       break;
 
-    // utilizador para baixo
+     // utilizador para baixo
     case 'u':
       TRANSLATE_USER_Y -= 1;
       glutPostRedisplay();
@@ -451,8 +468,8 @@ void teclasNotAscii(int key, int x, int y){
 }
 
 void Timer(int value){
-	glutPostRedisplay();
-	glutTimerFunc(msec, Timer, 1);
+  glutPostRedisplay();
+  glutTimerFunc(msec, Timer, 1);
 }
 
 
@@ -462,7 +479,7 @@ int main(int argc, char** argv){
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
   glutInitWindowSize (wScreen, hScreen);
   glutInitWindowPosition (300, 100);
-  glutCreateWindow ("FaceVisivel:'f'|      |Observador:'SETAS'|        |Andar-'a/s'|        |Rodar -'e/d'| ");
+  glutCreateWindow ("");
 
   inicializa();
 
