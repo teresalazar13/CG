@@ -135,7 +135,6 @@ int generate_random_int_number(int max) {
   return (rand() % max + 0);
 }
 
-
 void setupTextures() {
   glGenTextures(1, &texture[0]);
   glBindTexture(GL_TEXTURE_2D, texture[0]);
@@ -229,7 +228,6 @@ void drawBoundaries() {
 
 void generateCan() {
   int random_index;
-  srand (time(NULL));
 
   if (NUMBER_OF_CANS < 50) {
     int angRotateX_ = generate_random_int_number(360);
@@ -240,6 +238,7 @@ void generateCan() {
     angRotateY[NUMBER_OF_CANS] = angRotateY_;
     angRotateZ[NUMBER_OF_CANS] = angRotateZ_;
 
+    srand (time(NULL));
     int translateCanX_ = rand() % 10 - 5;
     int translateCanY_ = rand() % 10 - 5;
     int translateCanZ_ = rand() % 10 - 5;
@@ -254,7 +253,6 @@ void generateCan() {
     incTranslateCanZ[NUMBER_OF_CANS] = 0.1;
 
     random_index = generate_random_int_number(3);
-    printf("%d\n", random_index);
     cans[NUMBER_OF_CANS] = random_index;
     NUMBER_OF_CANS++;
   }
@@ -285,18 +283,29 @@ void createCans() {
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
 
     glBindTexture(GL_TEXTURE_2D, texture[cans[i]]);
+    GLUquadricObj* yy = gluNewQuadric();
+
+    // create cylinder
     glPushMatrix();
       glTranslated(translateCanX[i], translateCanY[i], translateCanZ[i]);
       glRotatef (angRotateX[i], 1, 0, 0);
       glRotatef (angRotateY[i], 0, 1, 0);
       glRotatef (angRotateZ[i], 0, 0, 1);
 
-      GLUquadricObj* yy = gluNewQuadric();
       gluQuadricDrawStyle ( yy, GLU_FILL   );
       gluQuadricNormals   ( yy, GLU_SMOOTH );
       gluQuadricTexture   ( yy, GL_TRUE    );
       // void gluCylinder(	GLUquadric* quad, GLdouble base, GLdouble top, GLdouble height, GLint slices, GLint stacks);
       gluCylinder(yy, 0.5, 0.5, 1.75, 100, 100);
+
+      // top of cylinder
+      glPushMatrix();
+        glTranslated(0.0f, 0.0f, 1.75);
+        gluDisk(yy, 0.0f, 0.5, 100, 100);
+      glPopMatrix();
+
+      //glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
+      gluDisk(yy, 0.0f, 0.5, 100, 100);
     glPopMatrix();
 
   }
