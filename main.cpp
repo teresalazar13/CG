@@ -122,12 +122,7 @@ GLfloat   incTranslateCanY[50] = {0.1};
 GLfloat   translateCanZ[50] = {0};
 GLfloat   incTranslateCanZ[50] = {0.1};
 
-int coloursCan[50] = {BLUE};
-
-float colours[6][4] = {BLUE, RED, YELLOW, GREEN, WHITE, BLACK};
-
 int NUMBER_OF_CANS = 1;
-
 
 int generate_random_int_number(int max) {
   srand (time(NULL));
