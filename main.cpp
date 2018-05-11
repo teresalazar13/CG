@@ -8,7 +8,6 @@
 #include <vector>
 #include "RgbImage.h"
 
-
 using namespace std;
 
 #define BLUE      0.0, 0.0, 1.0, 1.0
