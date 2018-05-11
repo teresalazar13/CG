@@ -117,4 +117,27 @@ GLfloat  incTranslateCanY[50] = {0.1};
 GLfloat  translateCanZ[50] = {0};
 GLfloat  incTranslateCanZ[50] = {0.1};
 
+// number of existing cans
 int NUMBER_OF_CANS = 1;
+
+//============================= Iluminacao
+
+//----------------------------- Global (ambiente)
+GLint   noite=1;
+GLfloat luzGlobalCor[4]={1.0,1.0,1.0,1.0};   // 
+
+//============================= Materiais: Esfera de jade 
+GLint   ligaLuz=1;
+GLfloat matAmbiente[] = { 0.135,    0.2225,   0.1575 };
+GLfloat matDifusa[]   = { 0.54,     0.89,     0.63 };
+GLfloat matEspecular[]= { 0.316228, 0.316228, 0.316228 };
+GLint   especMaterial = 0.1 * 128;
+
+
+//Tecto
+GLfloat localCor[4] ={0.4,0.4,0.0,1.0};
+GLfloat localCorDif[4] ={ 1, 1, 1, 1.0};
+GLfloat localPos[4] ={xC/2, 10.0, xC/2, 1.0};
+GLfloat localAttCon =1.0;
+GLfloat localAttLin =0.05;
+GLfloat localAttQua =0.0;

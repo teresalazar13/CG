@@ -15,6 +15,18 @@ int generate_random_int_number(int max) {
   return (rand() % max + 0);
 }
 
+void initLights() {
+  //Ambiente
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzGlobalCor);
+  glLightfv(GL_LIGHT0, GL_POSITION, localPos);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, localCor);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, localCorDif);
+  glLightf (GL_LIGHT0, GL_CONSTANT_ATTENUATION, localAttCon);
+  glLightf (GL_LIGHT0, GL_LINEAR_ATTENUATION,   localAttLin);
+  glLightf (GL_LIGHT0, GL_QUADRATIC_ATTENUATION,localAttQua);
+}
+
+// setups the textures used by the cans
 void setupTextures() {
   glGenTextures(1, &texture[0]);
   glBindTexture(GL_TEXTURE_2D, texture[0]);
@@ -61,8 +73,12 @@ void setupTextures() {
 
 void inicializa(void) {
   glClearColor(BLACK);		// Apagar
-  glEnable(GL_DEPTH_TEST);	// Profundidade
   glShadeModel(GL_SMOOTH);	// Interpolacao de cores
+
+  //initLights();
+
+  glEnable(GL_DEPTH_TEST);	// Profundidade
+
   setupTextures();
   glEnable(GL_TEXTURE_2D);  // Ativar modo textura
 
@@ -181,6 +197,7 @@ void createCans() {
       // top of cylinder
       glPushMatrix();
         glTranslated(0.0f, 0.0f, 1.75);
+        // (quad, inner, outer, slices, loops)
         gluDisk(yy, 0.0f, 0.5, 100, 100);
       glPopMatrix();
 
