@@ -16,8 +16,9 @@ int generate_random_int_number(int max) {
 }
 
 void initLights() {
-  //Ambiente
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzGlobalCor);
+
+  glEnable(GL_LIGHT0); 
   glLightfv(GL_LIGHT0, GL_POSITION, localPos);
   glLightfv(GL_LIGHT0, GL_AMBIENT, localCor);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, localCorDif);
@@ -75,8 +76,9 @@ void inicializa(void) {
   glClearColor(BLACK);		// Apagar
   glShadeModel(GL_SMOOTH);	// Interpolacao de cores
 
-  //initLights();
-
+  initLights();
+  glEnable(GL_LIGHTING);  
+  glEnable(GL_LIGHT0);  
   glEnable(GL_DEPTH_TEST);	// Profundidade
 
   setupTextures();
@@ -211,19 +213,21 @@ void createCans() {
 
 
 void drawScene(){
-  //=================================================== Qual o lado ?
-  glCullFace(GL_FRONT);  //glFrontFace(GL_CW);
+  //glCullFace(GL_FRONT);
 
   glTranslated(TRANSLATE_X, 0, 0);
   glTranslated(0, 2, 0);
   glRotated(ROTATE, 1, 0, 0);
   glTranslated(0, -2, 0);
 
+  glEnable(GL_LIGHTING);
+
   createCans();
 }
 
 
 void display(void){
+  glEnable(GL_LIGHT0);
 
   // Apaga ecra/profundidade
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
