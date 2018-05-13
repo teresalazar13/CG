@@ -124,14 +124,13 @@ int NUMBER_OF_CANS = 1;
 
 //----------------------------- Global (ambiente)
 GLint   noite=1;
-GLfloat luzGlobalCor[4]={0.8,0.8,0.8};   // 
-
+GLfloat luzGlobalCor[4]={1.0, 1.0, 1.0};   // 
 GLint   ligaLuz=1;
 
 //Tecto
 GLfloat localCor[4] ={0.4,0.4,0.0,1.0};
-GLfloat localCorDif[4] ={0.0, 0.0, 0.0, 1.0};
-GLfloat localPos[4] ={LOOK_X, 1.8, LOOK_Z, 1.0};
+GLfloat localCorDif[4] ={1.0, 1.0, 1.0, 1.0};
+GLfloat localPos[4] ={xC/2, 10.0, xC/2, 1.0};
 GLfloat localAttCon =1.0;
 GLfloat localAttLin =0.05;
 GLfloat localAttQua =0.0;

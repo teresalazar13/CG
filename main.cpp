@@ -16,22 +16,19 @@ int generate_random_int_number(int max) {
 }
 
 void initLights() {
-  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzGlobalCor);
-
   glEnable(GL_LIGHT0); 
   glLightfv(GL_LIGHT0, GL_POSITION, localPos);
   glLightfv(GL_LIGHT0, GL_AMBIENT, localCor);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, localCorDif);
-  glLightf (GL_LIGHT0, GL_CONSTANT_ATTENUATION, localAttCon);
-  glLightf (GL_LIGHT0, GL_LINEAR_ATTENUATION,   localAttLin);
-  glLightf (GL_LIGHT0, GL_QUADRATIC_ATTENUATION,localAttQua);
+  glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 120);
+  glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
 }
 
 // setups the textures used by the cans
 void setupTextures() {
   glGenTextures(1, &texture[0]);
   glBindTexture(GL_TEXTURE_2D, texture[0]);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -45,7 +42,7 @@ void setupTextures() {
 
   glGenTextures(1, &texture[1]);
   glBindTexture(GL_TEXTURE_2D, texture[1]);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -59,7 +56,7 @@ void setupTextures() {
 
   glGenTextures(1, &texture[2]);
   glBindTexture(GL_TEXTURE_2D, texture[2]);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
