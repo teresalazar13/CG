@@ -17,7 +17,7 @@ int generate_random_int_number(int max) {
 
 void initLights() {
   glEnable(GL_LIGHT0); 
-  glLightfv(GL_LIGHT0, GL_POSITION, localPos);
+  glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, localPos);
   glLightfv(GL_LIGHT0, GL_AMBIENT, localCor);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, localCorDif);
   glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 120);
