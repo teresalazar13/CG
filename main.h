@@ -20,7 +20,7 @@
 // saves info needed to render can
 struct Can {
   int texture;
-  int color_to_reflect;
+  int color;
 };
 
 // number of cans possible
@@ -138,4 +138,4 @@ GLfloat localAttCon = 1.0;
 GLfloat localAttLin = 0.05;
 GLfloat localAttQua = 0.0;
 
-GLfloat cores[] = {BLUE, RED, YELLOW, GREEN, WHITE}; 
+GLfloat colors[4][4] = {BLUE, RED, YELLOW, GREEN}; 

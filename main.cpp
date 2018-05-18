@@ -123,7 +123,9 @@ void drawBoundaries() {
 }
 
 void generateCan() {
-  int rand_texture;
+  srand (time(NULL));
+  int rand_texture = 0;
+  int rand_color = 0;
 
   if (NUMBER_OF_CANS < 50) {
     int angRotateX_ = generate_random_int_number(360);
@@ -134,7 +136,6 @@ void generateCan() {
     angRotateY[NUMBER_OF_CANS] = angRotateY_;
     angRotateZ[NUMBER_OF_CANS] = angRotateZ_;
 
-    srand (time(NULL));
     int translateCanX_ = rand() % 10 - 5;
     int translateCanY_ = rand() % 10 - 5;
     int translateCanZ_ = rand() % 10 - 5;
@@ -149,7 +150,10 @@ void generateCan() {
     incTranslateCanZ[NUMBER_OF_CANS] = 0.1;
 
     rand_texture = generate_random_int_number(3);
+    rand_color = generate_random_int_number(4);
+
     cans[NUMBER_OF_CANS].texture = rand_texture;
+    cans[NUMBER_OF_CANS].color = rand_color;
     NUMBER_OF_CANS++;
   }
 }
@@ -177,6 +181,15 @@ void createCans() {
       incTranslateCanZ[i] = incTranslateCanZ[i] * -1;
     }
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
+
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_EMISSION);
+    glColor4f(
+      colors[cans[i].color][0],
+      colors[cans[i].color][1],
+      colors[cans[i].color][2],
+      colors[cans[i].color][3]
+    );
 
     glBindTexture(GL_TEXTURE_2D, texture[cans[i].texture]);
     GLUquadricObj* yy = gluNewQuadric();
@@ -386,6 +399,8 @@ int main(int argc, char** argv){
   glutTimerFunc(msec, Timer, 1);
 
   glutMainLoop();
+
+  glDisable(GL_COLOR_MATERIAL);
 
   return 0;
 }
