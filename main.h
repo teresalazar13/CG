@@ -17,11 +17,16 @@
 #define BLACK     0.0, 0.0, 0.0, 1.0
 #define PI	  3.14159
 
+// saves info needed to render can
+struct Can {
+  int texture;
+  int color_to_reflect;
+};
+
 // number of cans possible
-int cans[50];
+Can cans[50];
 
 GLfloat tam = 2.0;
-
 static GLfloat vertices[]={
   // x = tam (Esquerda)
   -tam,  -tam,  tam,	// 0
@@ -79,6 +84,7 @@ static GLfloat cor[]={
 
 //------------------------------------------------------------ Texturas
 GLuint  texture[3];
+GLuint  skyboxtex[4];
 RgbImage imag;
 
 //------------------------------------------------------------ Sistema Coordenadas + objectos
@@ -121,16 +127,15 @@ GLfloat  incTranslateCanZ[50] = {0.1};
 int NUMBER_OF_CANS = 1;
 
 //============================= Iluminacao
-
-//----------------------------- Global (ambiente)
 GLint   noite=1;
 GLfloat luzGlobalCor[4]={1.0, 1.0, 1.0};   // 
 GLint   ligaLuz=1;
 
-//Tecto
-GLfloat localCor[4] ={0.4,0.4,0.0,1.0};
-GLfloat localCorDif[4] ={1.0, 1.0, 1.0, 1.0};
-GLfloat localPos[4] ={xC/2, 10.0, xC/2, 1.0};
-GLfloat localAttCon =1.0;
-GLfloat localAttLin =0.05;
-GLfloat localAttQua =0.0;
+GLfloat localCor[4] = {0.4, 0.4, 0.0, 1.0};
+GLfloat localCorDif[4] = {1.0, 1.0, 1.0, 1.0};
+GLfloat localPos[4] = {1.0, 0.0, 0.0};
+GLfloat localAttCon = 1.0;
+GLfloat localAttLin = 0.05;
+GLfloat localAttQua = 0.0;
+
+GLfloat cores[] = {BLUE, RED, YELLOW, GREEN, WHITE}; 

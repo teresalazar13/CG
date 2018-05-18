@@ -7,6 +7,7 @@
 #include <time.h>
 #include <vector>
 #include "main.h"
+#include "materiais.h"
 
 using namespace std;
 
@@ -122,7 +123,7 @@ void drawBoundaries() {
 }
 
 void generateCan() {
-  int random_index;
+  int rand_texture;
 
   if (NUMBER_OF_CANS < 50) {
     int angRotateX_ = generate_random_int_number(360);
@@ -147,8 +148,8 @@ void generateCan() {
     translateCanZ[NUMBER_OF_CANS] = translateCanZ_;
     incTranslateCanZ[NUMBER_OF_CANS] = 0.1;
 
-    random_index = generate_random_int_number(3);
-    cans[NUMBER_OF_CANS] = random_index;
+    rand_texture = generate_random_int_number(3);
+    cans[NUMBER_OF_CANS].texture = rand_texture;
     NUMBER_OF_CANS++;
   }
 }
@@ -177,7 +178,7 @@ void createCans() {
     }
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
 
-    glBindTexture(GL_TEXTURE_2D, texture[cans[i]]);
+    glBindTexture(GL_TEXTURE_2D, texture[cans[i].texture]);
     GLUquadricObj* yy = gluNewQuadric();
 
     // create cylinder
@@ -247,9 +248,7 @@ void display(void){
 }
 
 void keyboard(unsigned char key, int x, int y){
-
   switch (key) {
-
     // aproxima do centro ao inicio
     case 'o':
       rVisao -= 1;
