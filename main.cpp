@@ -11,11 +11,86 @@
 
 using namespace std;
 
+void drawCubeMap(){
+  glPushMatrix();
+
+    //left
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,skyboxtex[3]);
+    glBegin(GL_POLYGON);
+      glTexCoord2f(1.0f,0.0f);  glVertex3f(-30, -30, -30); 
+      glTexCoord2f(0.0f,0.0f);  glVertex3f(-30, -30, 30); 
+      glTexCoord2f(0.0f,1.0f);  glVertex3f(-30, 30, 30); 
+      glTexCoord2f(1.0f,1.0f);  glVertex3f(-30, 30, -30); 
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+
+    //top
+    glEnable(GL_TEXTURE_2D);  
+    glBindTexture(GL_TEXTURE_2D,skyboxtex[4]);
+    glBegin(GL_POLYGON);
+      glTexCoord2f(1.0,0.0);glVertex3f(30, 30, -30);
+      glTexCoord2f(1.0,1.0);glVertex3f(30, 30, 30);
+      glTexCoord2f(0.0,1.0);glVertex3f(-30, 30, 30);
+      glTexCoord2f(0.0,0.0);glVertex3f(-30, 30, -30);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+
+    // right
+    glEnable(GL_TEXTURE_2D);  
+    glBindTexture(GL_TEXTURE_2D,skyboxtex[1]);
+    glBegin(GL_POLYGON);
+      glTexCoord2f(0.0f,0.0f);  glVertex3f(30, -30, -30);
+      glTexCoord2f(1.0f,0.0f);  glVertex3f(30, -30, 30);
+      glTexCoord2f(1.0f,1.0f);  glVertex3f(30, 30, 30);
+      glTexCoord2f(0.0f,1.0f);  glVertex3f(30, 30, -30);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+    
+    // front
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,skyboxtex[0]);
+    glBegin(GL_POLYGON);
+      glTexCoord2f(1.0f,0.0f);glVertex3f(30, -30, -30);
+      glTexCoord2f(1.0f,1.0f);glVertex3f(30, 30, -30);
+      glTexCoord2f(0.0f,1.0f);glVertex3f(-30, 30, -30);
+      glTexCoord2f(0.0f,0.0f);glVertex3f(-30, -30, -30);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
+
+    //back
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,skyboxtex[2]);
+    glBegin(GL_POLYGON);
+      glTexCoord2f(0.0f,0.0f);glVertex3f(30, -30, 30);
+      glTexCoord2f(0.0f,1.0f);glVertex3f(30, 30, 30);
+      glTexCoord2f(1.0f,1.0f);glVertex3f(-30, 30, 30);
+      glTexCoord2f(1.0f,0.0f);glVertex3f(-30, -30, 30);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+
+    //bottom
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,skyboxtex[5]);
+    glBegin(GL_POLYGON);
+      glTexCoord2f(1.0f,0.0f);glVertex3f(-30, -30, 30);
+      glTexCoord2f(1.0f,1.0f);glVertex3f(30, -30, 30);
+      glTexCoord2f(0.0f,1.0f);glVertex3f(30, -30, -30);
+      glTexCoord2f(0.0f,0.0f);glVertex3f(-30, -30, -30);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+  glPopMatrix();
+}
+
+// util function that generates a random number from 0 to max
 int generate_random_int_number(int max) {
   srand (time(NULL));
   return (rand() % max + 0);
 }
 
+// initializes the lights used
 void initLights() {
   glEnable(GL_LIGHT0); 
   glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, localPos);
@@ -68,6 +143,69 @@ void setupTextures() {
     imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
     imag.ImageData()
   );
+
+  glDisable(GL_TEXTURE_2D),
+  glEnable(GL_TEXTURE_2D),
+
+  glGenTextures(1, &skyboxtex[0]); 
+  glBindTexture(GL_TEXTURE_2D, skyboxtex[0]); 
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); 
+  imag.LoadBmpFile("skybox/front.bmp"); 
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+  glGenTextures(1, &skyboxtex[1]); 
+  glBindTexture(GL_TEXTURE_2D, skyboxtex[1]); 
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
+  imag.LoadBmpFile("skybox/right.bmp"); 
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+  glGenTextures(1, &skyboxtex[2]); 
+  glBindTexture(GL_TEXTURE_2D, skyboxtex[2]); 
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
+  imag.LoadBmpFile("skybox/back.bmp"); 
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+  glGenTextures(1, &skyboxtex[3]); 
+  glBindTexture(GL_TEXTURE_2D, skyboxtex[3]); 
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
+  imag.LoadBmpFile("skybox/left.bmp"); 
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+  glGenTextures(1, &skyboxtex[4]); 
+  glBindTexture(GL_TEXTURE_2D, skyboxtex[4]); 
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
+  imag.LoadBmpFile("skybox/top.bmp"); 
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+  glGenTextures(1, &skyboxtex[5]); 
+  glBindTexture(GL_TEXTURE_2D, skyboxtex[5]); 
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
+  imag.LoadBmpFile("skybox/bottom.bmp"); 
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
 }
 
 void inicializa(void) {
@@ -163,25 +301,28 @@ void createCans() {
   glEnable(GL_TEXTURE_2D);
 
   for (int i = 0; i < NUMBER_OF_CANS; i++) {
+    // raise rotation angle
     angRotateX[i] = angRotateX[i] + incAngRotate;
     angRotateY[i] = angRotateY[i] + incAngRotate;
     angRotateZ[i] = angRotateZ[i] + incAngRotate;
 
-    if (translateCanY[i] > 5 || translateCanY[i] < -5) {
+    // translate can accordingly
+    if (translateCanY[i] > yC/2 || translateCanY[i] < -yC/2) {
       incTranslateCanY[i] = incTranslateCanY[i] * -1;
     }
     translateCanY[i] = translateCanY[i] + incTranslateCanY[i];
 
-    if (translateCanX[i] > 5 || translateCanX[i] < -5) {
+    if (translateCanX[i] > yC/2 || translateCanX[i] < -yC/2) {
       incTranslateCanX[i] = incTranslateCanX[i] * -1;
     }
     translateCanX[i] = translateCanX[i] + incTranslateCanX[i];
 
-    if (translateCanZ[i] > 5 || translateCanZ[i] < -5) {
+    if (translateCanZ[i] > yC/2 || translateCanZ[i] < -yC/2) {
       incTranslateCanZ[i] = incTranslateCanZ[i] * -1;
     }
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
 
+    // color reflected by can
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT_AND_BACK, GL_EMISSION);
     glColor4f(
@@ -191,6 +332,7 @@ void createCans() {
       colors[cans[i].color][3]
     );
 
+    // bind texture to can
     glBindTexture(GL_TEXTURE_2D, texture[cans[i].texture]);
     GLUquadricObj* yy = gluNewQuadric();
 
@@ -253,7 +395,7 @@ void display(void){
 
   // Objectos
   // drawEixos();
-  drawBoundaries();
+  drawCubeMap();
   drawScene();
 
   // Actualizacao
@@ -352,7 +494,6 @@ void keyboard(unsigned char key, int x, int y){
       break;
   }
 }
-
 
 void teclasNotAscii(int key, int x, int y){
 

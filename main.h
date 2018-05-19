@@ -8,6 +8,8 @@
 #include <vector>
 #include "RgbImage.h"
 
+using namespace std;
+
 // colors
 #define BLUE      0.0, 0.0, 1.0, 1.0
 #define RED	  1.0, 0.0, 0.0, 1.0
@@ -84,12 +86,12 @@ static GLfloat cor[]={
 
 //------------------------------------------------------------ Texturas
 GLuint  texture[3];
-GLuint  skyboxtex[4];
+GLuint  skyboxtex[6];
 RgbImage imag;
 
 //------------------------------------------------------------ Sistema Coordenadas + objectos
 GLint		wScreen=1600, hScreen=1200;		//.. janela (pixeis)
-GLfloat		xC=10.0, yC=10.0, zC=10.0;		//.. Mundo  (unidades mundo)
+GLfloat		xC=20.0, yC=20.0, zC=20.0;		//.. Mundo  (unidades mundo)
 
 //------------------------------------------------------------ Observador
 GLfloat  rVisao = 18, aVisao=0.5*PI, incVisao=0.05;
