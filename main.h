@@ -133,7 +133,7 @@ GLint   noite=1;
 GLfloat luzGlobalCor[4]={1.0, 1.0, 1.0};   // 
 GLint   ligaLuz=1;
 
-GLfloat localCor[4] = {0.4, 0.4, 0.0, 1.0};
+GLfloat localCor[4] = {1.0, 1.0, 1.0, 1.0};
 GLfloat localCorDif[4] = {1.0, 1.0, 1.0, 1.0};
 GLfloat localPos[4] = {1.0, 0.0, 0.0};
 GLfloat localAttCon = 1.0;
