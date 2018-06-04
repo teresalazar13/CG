@@ -6,138 +6,105 @@
 #include <math.h>
 #include <time.h>
 #include <vector>
-#include "RgbImage.h"
+#include "main.h"
+#include "materiais.h"
 
 using namespace std;
 
-#define BLUE      0.0, 0.0, 1.0, 1.0
-#define RED	  1.0, 0.0, 0.0, 1.0
-#define YELLOW	  1.0, 1.0, 0.0, 1.0
-#define GREEN     0.0, 1.0, 0.0, 1.0
-#define WHITE     1.0, 1.0, 1.0, 1.0
-#define BLACK     0.0, 0.0, 0.0, 1.0
-#define PI	  3.14159
+void drawCubeMap(){
+  glPushMatrix();
 
-int cans[50];
+    //left
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,skyboxtex[3]);
+    glBegin(GL_POLYGON);
+      glTexCoord2f(1.0f,0.0f);  glVertex3f(-30, -30, -30); 
+      glTexCoord2f(0.0f,0.0f);  glVertex3f(-30, -30, 30); 
+      glTexCoord2f(0.0f,1.0f);  glVertex3f(-30, 30, 30); 
+      glTexCoord2f(1.0f,1.0f);  glVertex3f(-30, 30, -30); 
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
 
-GLfloat tam = 2.0;
-static GLfloat vertices[]={
-  // x = tam (Esquerda)
-  -tam,  -tam,  tam,	// 0
-  -tam,   tam,  tam,	// 1
-  -tam,   tam, -tam,	// 2
-  -tam,  -tam, -tam,	// 3
-  // Direita
-  tam,  -tam,  tam,	// 4
-  tam,   tam,  tam,	// 5
-  tam,   tam, -tam,	// 6
-  tam,  -tam, -tam,	// 7
-  // Cima
-  -tam,  tam,  tam,	// 8
-  -tam,  tam, -tam,	// 9
-  tam,  tam, -tam,	// 10
-  tam,  tam,  tam,	// 11
-};
+    //top
+    glEnable(GL_TEXTURE_2D);  
+    glBindTexture(GL_TEXTURE_2D,skyboxtex[4]);
+    glBegin(GL_POLYGON);
+      glTexCoord2f(1.0,0.0);glVertex3f(30, 30, -30);
+      glTexCoord2f(1.0,1.0);glVertex3f(30, 30, 30);
+      glTexCoord2f(0.0,1.0);glVertex3f(-30, 30, 30);
+      glTexCoord2f(0.0,0.0);glVertex3f(-30, 30, -30);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
 
-static GLfloat normais[] = {
-  // x=tam (Esquerda)
-  -1.0,  0.0,  0.0,
-  -1.0,  0.0,  0.0,
-  -1.0,  0.0,  0.0,
-  -1.0,  0.0,  0.0,
-  // x=tam (Direita)
-  1.0,  0.0,  0.0,
-  1.0,  0.0,  0.0,
-  1.0,  0.0,  0.0,
-  1.0,  0.0,  0.0,
-  //  y=tam (Cima)
-  0.0,  1.0,  0.0,
-  0.0,  1.0,  0.0,
-  0.0,  1.0,  0.0,
-  0.0,  1.0,  0.0,
-};
+    // right
+    glEnable(GL_TEXTURE_2D);  
+    glBindTexture(GL_TEXTURE_2D,skyboxtex[1]);
+    glBegin(GL_POLYGON);
+      glTexCoord2f(0.0f,0.0f);  glVertex3f(30, -30, -30);
+      glTexCoord2f(1.0f,0.0f);  glVertex3f(30, -30, 30);
+      glTexCoord2f(1.0f,1.0f);  glVertex3f(30, 30, 30);
+      glTexCoord2f(0.0f,1.0f);  glVertex3f(30, 30, -30);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+    
+    // front
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,skyboxtex[0]);
+    glBegin(GL_POLYGON);
+      glTexCoord2f(1.0f,0.0f);glVertex3f(30, -30, -30);
+      glTexCoord2f(1.0f,1.0f);glVertex3f(30, 30, -30);
+      glTexCoord2f(0.0f,1.0f);glVertex3f(-30, 30, -30);
+      glTexCoord2f(0.0f,0.0f);glVertex3f(-30, -30, -30);
+    glEnd();
 
-//------------------------------------------------------------ Cores
-static GLfloat cor[]={
-  // x=tam (Esquerda) - Red
-  1.0,  0.0, 0.0,	// 0
-  1.0,  0.0, 0.0,	// 1
-  1.0,  1.0, 0.0,	// 2
-  1.0,  1.0, 0.0,	// 3
-  // x=2*tam (Direita) - Green
-  0.0,  1.0, 1.0,	// 4
-  0.0,  1.0, 1.0,	// 5
-  0.0,  1.0, 0.0,	// 6
-  0.0,  1.0, 0.0,	// 7
-  // y=tam (Cima) - Blue
-  0.0,  0.0, 1.0,	// 8
-  0.0,  0.0, 1.0,	// 9
-  1.0,  0.0, 1.0,	// 10
-  1.0,  0.0, 1.0,	// 11
-};
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glDisable(GL_TEXTURE_2D);
 
-//------------------------------------------------------------ Texturas
-GLuint  texture[3];
-RgbImage imag;
+    //back
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,skyboxtex[2]);
+    glBegin(GL_POLYGON);
+      glTexCoord2f(0.0f,0.0f);glVertex3f(30, -30, 30);
+      glTexCoord2f(0.0f,1.0f);glVertex3f(30, 30, 30);
+      glTexCoord2f(1.0f,1.0f);glVertex3f(-30, 30, 30);
+      glTexCoord2f(1.0f,0.0f);glVertex3f(-30, -30, 30);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
 
-//=========================================================== FACES DA MESA
-static GLuint     cima[] = {8, 11, 10, 9};
-static GLuint     esquerda[] = {0, 1, 2, 3};
-static GLuint     direita[] = {4, 7, 6, 5};
+    //bottom
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,skyboxtex[5]);
+    glBegin(GL_POLYGON);
+      glTexCoord2f(1.0f,0.0f);glVertex3f(-30, -30, 30);
+      glTexCoord2f(1.0f,1.0f);glVertex3f(30, -30, 30);
+      glTexCoord2f(0.0f,1.0f);glVertex3f(30, -30, -30);
+      glTexCoord2f(0.0f,0.0f);glVertex3f(-30, -30, -30);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+  glPopMatrix();
+}
 
-
-//------------------------------------------------------------ Sistema Coordenadas + objectos
-GLint		wScreen=1600, hScreen=1200;		//.. janela (pixeis)
-GLfloat		xC=10.0, yC=10.0, zC=10.0;		//.. Mundo  (unidades mundo)
-
-//------------------------------------------------------------ Observador
-GLfloat  rVisao = 18, aVisao=0.5*PI, incVisao=0.05;
-GLfloat  obsP[] = {rVisao * cos(aVisao), 3, rVisao * sin(aVisao)};
-GLfloat  angZoom=90;
-GLfloat  incZoom=3;
-
-GLfloat TRANSLATE_X = 0;
-GLfloat TRANSLATE_USER_Y = 0;
-
-GLfloat LOOK_X = 0;
-GLfloat LOOK_Y = 0;
-GLfloat LOOK_Z = 0;
-
-GLfloat ROTATE = 0;
-
-GLint    msec = 1;					//.. definicao do timer (actualizacao)
-
-GLfloat  angRotateX[50] = {0};
-GLfloat  angRotateY[50] = {0};
-GLfloat  angRotateZ[50] = {0};
-
-GLfloat  incAngRotate = 1;
-
-GLfloat   translateCanX[50] = {0};
-GLfloat   incTranslateCanX[50] = {0.1};
-
-GLfloat   translateCanY[50] = {0};
-GLfloat   incTranslateCanY[50] = {0.1};
-
-GLfloat   translateCanZ[50] = {0};
-GLfloat   incTranslateCanZ[50] = {0.1};
-
-int coloursCan[50] = {BLUE};
-
-float colours[6][4] = {BLUE, RED, YELLOW, GREEN, WHITE, BLACK};
-
-int NUMBER_OF_CANS = 1;
-
-
+// util function that generates a random number from 0 to max
 int generate_random_int_number(int max) {
   srand (time(NULL));
   return (rand() % max + 0);
 }
 
+// initializes the lights used
+void initLights() {
+  glEnable(GL_LIGHT0); 
+  glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, localPos);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, localCor);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, localCorDif);
+  glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 120);
+  glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
+}
+
+// setups the textures used by the cans
 void setupTextures() {
   glGenTextures(1, &texture[0]);
   glBindTexture(GL_TEXTURE_2D, texture[0]);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -151,7 +118,7 @@ void setupTextures() {
 
   glGenTextures(1, &texture[1]);
   glBindTexture(GL_TEXTURE_2D, texture[1]);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -165,7 +132,7 @@ void setupTextures() {
 
   glGenTextures(1, &texture[2]);
   glBindTexture(GL_TEXTURE_2D, texture[2]);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -176,12 +143,74 @@ void setupTextures() {
     imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
     imag.ImageData()
   );
+
+  glDisable(GL_TEXTURE_2D),
+  glEnable(GL_TEXTURE_2D),
+
+  glGenTextures(1, &skyboxtex[0]); 
+  glBindTexture(GL_TEXTURE_2D, skyboxtex[0]); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); 
+  imag.LoadBmpFile("skybox/front.bmp"); 
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+  glGenTextures(1, &skyboxtex[1]); 
+  glBindTexture(GL_TEXTURE_2D, skyboxtex[1]); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
+  imag.LoadBmpFile("skybox/right.bmp"); 
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+  glGenTextures(1, &skyboxtex[2]); 
+  glBindTexture(GL_TEXTURE_2D, skyboxtex[2]); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
+  imag.LoadBmpFile("skybox/back.bmp"); 
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+  glGenTextures(1, &skyboxtex[3]); 
+  glBindTexture(GL_TEXTURE_2D, skyboxtex[3]); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
+  imag.LoadBmpFile("skybox/left.bmp"); 
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+  glGenTextures(1, &skyboxtex[4]); 
+  glBindTexture(GL_TEXTURE_2D, skyboxtex[4]); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
+  imag.LoadBmpFile("skybox/top.bmp"); 
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+  glGenTextures(1, &skyboxtex[5]); 
+  glBindTexture(GL_TEXTURE_2D, skyboxtex[5]); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
+  imag.LoadBmpFile("skybox/bottom.bmp"); 
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
 }
 
 void inicializa(void) {
   glClearColor(BLACK);		// Apagar
-  glEnable(GL_DEPTH_TEST);	// Profundidade
   glShadeModel(GL_SMOOTH);	// Interpolacao de cores
+
+  initLights();
+  glEnable(GL_LIGHTING);  
+  glEnable(GL_LIGHT0);  
+  glEnable(GL_DEPTH_TEST);	// Profundidade
+
   setupTextures();
   glEnable(GL_TEXTURE_2D);  // Ativar modo textura
 
@@ -226,7 +255,9 @@ void drawBoundaries() {
 }
 
 void generateCan() {
-  int random_index;
+  srand (time(NULL));
+  int rand_texture = 0;
+  int rand_color = 0;
 
   if (NUMBER_OF_CANS < 50) {
     int angRotateX_ = generate_random_int_number(360);
@@ -237,7 +268,6 @@ void generateCan() {
     angRotateY[NUMBER_OF_CANS] = angRotateY_;
     angRotateZ[NUMBER_OF_CANS] = angRotateZ_;
 
-    srand (time(NULL));
     int translateCanX_ = rand() % 10 - 5;
     int translateCanY_ = rand() % 10 - 5;
     int translateCanZ_ = rand() % 10 - 5;
@@ -251,8 +281,11 @@ void generateCan() {
     translateCanZ[NUMBER_OF_CANS] = translateCanZ_;
     incTranslateCanZ[NUMBER_OF_CANS] = 0.1;
 
-    random_index = generate_random_int_number(3);
-    cans[NUMBER_OF_CANS] = random_index;
+    rand_texture = generate_random_int_number(3);
+    rand_color = generate_random_int_number(4);
+
+    cans[NUMBER_OF_CANS].texture = rand_texture;
+    cans[NUMBER_OF_CANS].color = rand_color;
     NUMBER_OF_CANS++;
   }
 }
@@ -262,26 +295,39 @@ void createCans() {
   glEnable(GL_TEXTURE_2D);
 
   for (int i = 0; i < NUMBER_OF_CANS; i++) {
+    // raise rotation angle
     angRotateX[i] = angRotateX[i] + incAngRotate;
     angRotateY[i] = angRotateY[i] + incAngRotate;
     angRotateZ[i] = angRotateZ[i] + incAngRotate;
 
-    if (translateCanY[i] > 5 || translateCanY[i] < -5) {
+    // translate can accordingly
+    if (translateCanY[i] > yC/2 || translateCanY[i] < -yC/2) {
       incTranslateCanY[i] = incTranslateCanY[i] * -1;
     }
     translateCanY[i] = translateCanY[i] + incTranslateCanY[i];
 
-    if (translateCanX[i] > 5 || translateCanX[i] < -5) {
+    if (translateCanX[i] > yC/2 || translateCanX[i] < -yC/2) {
       incTranslateCanX[i] = incTranslateCanX[i] * -1;
     }
     translateCanX[i] = translateCanX[i] + incTranslateCanX[i];
 
-    if (translateCanZ[i] > 5 || translateCanZ[i] < -5) {
+    if (translateCanZ[i] > yC/2 || translateCanZ[i] < -yC/2) {
       incTranslateCanZ[i] = incTranslateCanZ[i] * -1;
     }
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
 
-    glBindTexture(GL_TEXTURE_2D, texture[cans[i]]);
+    // color reflected by can
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_EMISSION);
+    glColor4f(
+      colors[cans[i].color][0],
+      colors[cans[i].color][1],
+      colors[cans[i].color][2],
+      colors[cans[i].color][3]
+    );
+
+    // bind texture to can
+    glBindTexture(GL_TEXTURE_2D, texture[cans[i].texture]);
     GLUquadricObj* yy = gluNewQuadric();
 
     // create cylinder
@@ -300,6 +346,7 @@ void createCans() {
       // top of cylinder
       glPushMatrix();
         glTranslated(0.0f, 0.0f, 1.75);
+        // (quad, inner, outer, slices, loops)
         gluDisk(yy, 0.0f, 0.5, 100, 100);
       glPopMatrix();
 
@@ -313,19 +360,21 @@ void createCans() {
 
 
 void drawScene(){
-  //=================================================== Qual o lado ?
-  glCullFace(GL_FRONT);  //glFrontFace(GL_CW);
+  //glCullFace(GL_FRONT);
 
   glTranslated(TRANSLATE_X, 0, 0);
   glTranslated(0, 2, 0);
   glRotated(ROTATE, 1, 0, 0);
   glTranslated(0, -2, 0);
 
+  glEnable(GL_LIGHTING);
+
   createCans();
 }
 
 
 void display(void){
+  glEnable(GL_LIGHT0);
 
   // Apaga ecra/profundidade
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -340,7 +389,7 @@ void display(void){
 
   // Objectos
   // drawEixos();
-  drawBoundaries();
+  drawCubeMap();
   drawScene();
 
   // Actualizacao
@@ -348,9 +397,7 @@ void display(void){
 }
 
 void keyboard(unsigned char key, int x, int y){
-
   switch (key) {
-
     // aproxima do centro ao inicio
     case 'o':
       rVisao -= 1;
@@ -442,7 +489,6 @@ void keyboard(unsigned char key, int x, int y){
   }
 }
 
-
 void teclasNotAscii(int key, int x, int y){
 
   if(key == GLUT_KEY_UP)
@@ -488,6 +534,8 @@ int main(int argc, char** argv){
   glutTimerFunc(msec, Timer, 1);
 
   glutMainLoop();
+
+  glDisable(GL_COLOR_MATERIAL);
 
   return 0;
 }
