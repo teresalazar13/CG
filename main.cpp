@@ -382,7 +382,7 @@ void display(void){
   glViewport (0, 0, wScreen, hScreen);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(angZoom, (float)wScreen/hScreen, 0.1, 3*zC);
+  gluPerspective(angZoom, (float)wScreen/hScreen, 0.1, 5*zC);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   gluLookAt(rVisao*cos(aVisao), obsP[1] + TRANSLATE_USER_Y, rVisao*sin(aVisao), LOOK_X, LOOK_Y, LOOK_Z, 0, 1, 0);
