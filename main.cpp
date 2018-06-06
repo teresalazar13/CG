@@ -1,13 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
-#include <math.h>
-#include <time.h>
-#include <vector>
 #include "main.h"
-#include "materiais.h"
 
 using namespace std;
 
@@ -17,21 +8,11 @@ int generate_random_int_number(int max) {
   return (rand() % max + 0);
 }
 
-// initializes the lights used
-void initLights() {
-  glEnable(GL_LIGHT0);
-  glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, localPos);
-  glLightfv(GL_LIGHT0, GL_AMBIENT, localCor);
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, localCorDif);
-  glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 120);
-  glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
-}
-
 void inicializa(void) {
   glClearColor(BLACK);		// Apagar
   glShadeModel(GL_SMOOTH);	// Interpolacao de cores
 
-  initLights();
+  render.setup_lights();
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
   glEnable(GL_DEPTH_TEST);	// Profundidade
@@ -219,86 +200,71 @@ void keyboard(unsigned char key, int x, int y){
       rVisao -= 1;
       glutPostRedisplay();
       break;
-
     // afasta do centro ao inicio
     case 'p':
       rVisao += 1;
       glutPostRedisplay();
       break;
-
      // utilizador para baixo
     case 'u':
       TRANSLATE_USER_Y -= 1;
       glutPostRedisplay();
       break;
-
     // utilizador para cima
     case 'i':
       TRANSLATE_USER_Y += 1;
       glutPostRedisplay();
       break;
-
     // modificar o ponto para onde o utilizar esta a olha no eixo dos x
     case 'q':
       LOOK_X += -1;
       glutPostRedisplay();
       break;
-
     // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
     case 'w':
       LOOK_X += 1;
       glutPostRedisplay();
       break;
-
     // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
     case 'e':
       LOOK_Y += -1;
       glutPostRedisplay();
       break;
-
     // modificar o ponto para onde o utilizar esta a olha no eixo dos yy
     case 'r':
       LOOK_Y += 1;
       glutPostRedisplay();
       break;
-
     // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
     case 't':
       LOOK_Z += -1;
       glutPostRedisplay();
       break;
-
     // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
     case 'y':
       LOOK_Z += 1;
       glutPostRedisplay();
       break;
-
     case 'a':
       TRANSLATE_X += 1;
       glutPostRedisplay();
       break;
-
     case 's':
       TRANSLATE_X -= 1;
       glutPostRedisplay();
       break;
-
     case 'd':
       ROTATE -= 10;
       glutPostRedisplay();
       break;
-
     case 'f':
       ROTATE += 10;
       glutPostRedisplay();
       break;
-
     case 'z':
       generateCan();
       glutPostRedisplay();
       break;
-
     case 27:
       exit(0);
       break;

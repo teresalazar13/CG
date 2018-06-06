@@ -1,5 +1,23 @@
 #include "render.h"
 
+void Render::setup_lights() {
+  // initializes variables
+  GLfloat luzGlobalCor[4]={1.0, 1.0, 1.0};
+  GLfloat localCor[4] = {1.0, 1.0, 1.0, 1.0};
+  GLfloat localCorDif[4] = {1.0, 1.0, 1.0, 1.0};
+  GLfloat localPos[4] = {1.0, 0.0, 0.0};
+  GLfloat localAttCon = 1.0;
+  GLfloat localAttLin = 0.05;
+  GLfloat localAttQua = 0.0;
+
+  glEnable(GL_LIGHT0);
+  glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, localPos);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, localCor);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, localCorDif);
+  glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 120);
+  glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
+}
+
 void Render::render_cubemap() {
   glPushMatrix();
 

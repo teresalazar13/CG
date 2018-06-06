@@ -1,3 +1,6 @@
+#ifndef MAIN_HEADER
+#define MAIN_HEADER
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <OpenGL/gl.h>
@@ -6,6 +9,7 @@
 #include <math.h>
 #include <time.h>
 #include <vector>
+#include "materiais.h"
 #include "RgbImage.h"
 #include "render.h"
 
@@ -129,18 +133,9 @@ int NUMBER_OF_CANS = 1;
 // meter varios tipos de focos com angulos diferentes e cores diferentes
 // 1;0;0 para amb dif e especular faz um foco vermelhokk
 
-GLint   noite=1;
-GLfloat luzGlobalCor[4]={1.0, 1.0, 1.0};   // 
-GLint   ligaLuz=1;
-
-GLfloat localCor[4] = {1.0, 1.0, 1.0, 1.0};
-GLfloat localCorDif[4] = {1.0, 1.0, 1.0, 1.0};
-GLfloat localPos[4] = {1.0, 0.0, 0.0};
-GLfloat localAttCon = 1.0;
-GLfloat localAttLin = 0.05;
-GLfloat localAttQua = 0.0;
-
 GLfloat colors[4][4] = {BLUE, RED, YELLOW, GREEN}; 
 
-// insert commment
+// Object with methods needed to render
 Render render;
+
+#endif

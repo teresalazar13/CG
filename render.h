@@ -1,3 +1,6 @@
+#ifndef RENDER_HEADER
+#define RENDER_HEADER
+
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #else
@@ -14,7 +17,9 @@ class Render {
     GLuint  texture[3];
     RgbImage imag;
 
+    void setup_lights();
     void setup_default_textures();
     void setup_cubemap_textures();
     void render_cubemap();
 };
+#endif
