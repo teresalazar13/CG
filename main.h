@@ -7,6 +7,7 @@
 #include <time.h>
 #include <vector>
 #include "RgbImage.h"
+#include "render.h"
 
 using namespace std;
 
@@ -84,11 +85,6 @@ static GLfloat cor[]={
   1.0,  0.0, 1.0,	// 11
 };
 
-//------------------------------------------------------------ Texturas
-GLuint  texture[3];
-GLuint  skyboxtex[6];
-RgbImage imag;
-
 //------------------------------------------------------------ Sistema Coordenadas + objectos
 GLint		wScreen=1600, hScreen=1200;		//.. janela (pixeis)
 GLfloat		xC=20.0, yC=20.0, zC=20.0;		//.. Mundo  (unidades mundo)
@@ -129,6 +125,10 @@ GLfloat  incTranslateCanZ[50] = {0.1};
 int NUMBER_OF_CANS = 1;
 
 //============================= Iluminacao
+
+// meter varios tipos de focos com angulos diferentes e cores diferentes
+// 1;0;0 para amb dif e especular faz um foco vermelhokk
+
 GLint   noite=1;
 GLfloat luzGlobalCor[4]={1.0, 1.0, 1.0};   // 
 GLint   ligaLuz=1;
@@ -141,3 +141,6 @@ GLfloat localAttLin = 0.05;
 GLfloat localAttQua = 0.0;
 
 GLfloat colors[4][4] = {BLUE, RED, YELLOW, GREEN}; 
+
+// insert commment
+Render render;
