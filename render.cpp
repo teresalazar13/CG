@@ -5,20 +5,20 @@ void Render::setup_lights() {
   GLfloat light0_amb[4] = {1.0, 0.0, 0.0, 1.0};
   GLfloat light0_dif[4] = {1.0, 0.0, 0.0, 1.0};
   GLfloat light0_spec[4] = {1.0, 0.0, 0.0, 1.0};
-  GLfloat light0_pos[4] = {20.0, 0.0, 0.0};
+  GLfloat light0_pos[4] = {5.0, 1.0, 1.0};
 
   GLfloat light1_amb[4] = {0.0, 1.0, 0.0, 1.0};
   GLfloat light1_dif[4] = {0.0, 1.0, 0.0, 1.0};
   GLfloat light1_spec[4] = {0.0, 1.0, 0.0, 1.0};
-  GLfloat light1_pos[4] = {0.0, 20.0, 0.0};
+  GLfloat light1_pos[4] = {1.0, 5.0, 1.0};
 
   glEnable(GL_LIGHT0);
   glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_pos);
   glLightfv(GL_LIGHT0, GL_AMBIENT, light0_amb);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_dif);
   glLightfv(GL_LIGHT0, GL_SPECULAR, light0_spec);
-  glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 60);
-  glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 80);
+  glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 120);
+  glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
   glDisable(GL_LIGHT0);
 
   glEnable(GL_LIGHT1);
@@ -26,8 +26,8 @@ void Render::setup_lights() {
   glLightfv(GL_LIGHT1, GL_AMBIENT, light1_amb);
   glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_dif);
   glLightfv(GL_LIGHT0, GL_SPECULAR, light1_spec);
-  glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 60);
-  glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 80);
+  glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 120);
+  glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
   glDisable(GL_LIGHT1);
 }
 

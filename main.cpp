@@ -15,7 +15,7 @@ void inicializa(void) {
   render.setup_lights();
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
-  glEnable(GL_DEPTH_TEST);	// Profundidade
+  glEnable(GL_LIGHT1);
 
   render.setup_default_textures();
   render.setup_cubemap_textures();
@@ -115,14 +115,14 @@ void createCans() {
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
 
     // color reflected by can
-    glEnable(GL_COLOR_MATERIAL);
-    glColorMaterial(GL_FRONT_AND_BACK, GL_EMISSION);
-    glColor4f(
-      colors[cans[i].color][0],
-      colors[cans[i].color][1],
-      colors[cans[i].color][2],
-      colors[cans[i].color][3]
-    );
+    //glEnable(GL_COLOR_MATERIAL);
+    //glColorMaterial(GL_FRONT_AND_BACK, GL_EMISSION);
+    //glColor4f(
+      //colors[cans[i].color][0],
+      //colors[cans[i].color][1],
+      //colors[cans[i].color][2],
+      //colors[cans[i].color][3]
+    //);
 
     // bind texture to can
     glBindTexture(GL_TEXTURE_2D, render.texture[cans[i].texture]);
@@ -148,8 +148,12 @@ void createCans() {
         gluDisk(yy, 0.0f, 0.5, 100, 100);
       glPopMatrix();
 
-      //glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
-      gluDisk(yy, 0.0f, 0.5, 100, 100);
+      // bottom of cylinder
+      glPushMatrix();
+        // (quad, inner, outer, slices, loops)
+        gluDisk(yy, 0.0f, 0.5, 100, 100);
+      glPopMatrix();
+
     glPopMatrix();
 
   }
@@ -165,14 +169,10 @@ void drawScene(){
   glRotated(ROTATE, 1, 0, 0);
   glTranslated(0, -2, 0);
 
-  glEnable(GL_LIGHTING);
-
   createCans();
 }
 
 void display(void){
-  glEnable(GL_LIGHT0);
-
   // Apaga ecra/profundidade
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
@@ -265,6 +265,14 @@ void keyboard(unsigned char key, int x, int y){
       generateCan();
       glutPostRedisplay();
       break;
+    case '.':
+      glEnable(GL_LIGHT0);
+      glDisable(GL_LIGHT1);
+      break;
+    case '-':
+      glEnable(GL_LIGHT1);
+      glDisable(GL_LIGHT0);
+      break;
     case 27:
       exit(0);
       break;
@@ -317,7 +325,8 @@ int main(int argc, char** argv){
 
   glutMainLoop();
 
-  glDisable(GL_COLOR_MATERIAL);
+  glDisable(GL_LIGHT0);
+  glDisable(GL_LIGHT1);
 
   return 0;
 }
