@@ -100,10 +100,10 @@ GLfloat  angZoom=90;
 GLfloat  incZoom=3;
 
 GLfloat TRANSLATE_X = 0;
-GLfloat TRANSLATE_USER_Y = 0;
+GLfloat TRANSLATE_USER_Y = 3;
 
 GLfloat LOOK_X = 0;
-GLfloat LOOK_Y = 0;
+GLfloat LOOK_Y = 5;
 GLfloat LOOK_Z = 0;
 
 GLfloat ROTATE = 0;
@@ -133,7 +133,7 @@ int NUMBER_OF_CANS = 1;
 // meter varios tipos de focos com angulos diferentes e cores diferentes
 // 1;0;0 para amb dif e especular faz um foco vermelhokk
 
-GLfloat colors[4][4] = {BLUE, RED, YELLOW, GREEN}; 
+GLfloat colors[4][4] = {BLUE, RED, YELLOW, GREEN};
 
 // Object with methods needed to render
 Render render;
