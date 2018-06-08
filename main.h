@@ -123,7 +123,7 @@ GLfloat  translateCanZ[50] = {0};
 GLfloat  incTranslateCanZ[50] = {0.1};
 
 // number of existing cans
-int NUMBER_OF_CANS = 1;
+int NUMBER_OF_CANS = 0;
 
 //============================= Iluminacao
 

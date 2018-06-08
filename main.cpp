@@ -24,14 +24,8 @@ void inicializa(void) {
   render.setup_cubemap_textures();
   // Ativar modo textura
   glEnable(GL_TEXTURE_2D);
+  glEnable(GL_DEPTH_TEST);
 
-  // Vertex arrays
-  glVertexPointer(3, GL_FLOAT, 0, vertices);
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glNormalPointer(GL_FLOAT, 0, normais);
-  glEnableClientState(GL_NORMAL_ARRAY);
-  glColorPointer(3, GL_FLOAT, 0, cor);
-  glEnableClientState(GL_COLOR_ARRAY);
 }
 
 void generateCan() {
@@ -102,16 +96,6 @@ void createCans() {
     }
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
 
-    // color reflected by can
-    //glEnable(GL_COLOR_MATERIAL);
-    //glColorMaterial(GL_FRONT_AND_BACK, GL_EMISSION);
-    //glColor4f(
-      //colors[cans[i].color][0],
-      //colors[cans[i].color][1],
-      //colors[cans[i].color][2],
-      //colors[cans[i].color][3]
-    //);
-
     // bind texture to can
     glBindTexture(GL_TEXTURE_2D, render.texture[cans[i].texture]);
     GLUquadricObj* yy = gluNewQuadric();
@@ -164,7 +148,7 @@ void display(void){
   render.render_cubemap();
   createCans();
 
-  // Actualizacao
+  // Atualizacao
   glutSwapBuffers();
 }
 
@@ -272,7 +256,6 @@ void Timer(int value){
 
 
 int main(int argc, char** argv){
-
   glutInit(&argc, argv);
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
   glutInitWindowSize (wScreen, hScreen);
@@ -288,10 +271,5 @@ int main(int argc, char** argv){
   glutTimerFunc(msec, Timer, 1);
 
   glutMainLoop();
-
-  glDisable(GL_LIGHT0);
-  glDisable(GL_LIGHT1);
-  glDisable(GL_LIGHT2);
-
   return 0;
 }

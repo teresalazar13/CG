@@ -13,7 +13,7 @@ using namespace std;
 
 class Render {
   public:
-    GLuint  skyboxtex[6];
+    GLuint  skyboxtex[1];
     GLuint  texture[3];
     RgbImage imag;
 
