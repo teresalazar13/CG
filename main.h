@@ -100,13 +100,10 @@ GLfloat  angZoom=90;
 GLfloat  incZoom=3;
 
 GLfloat TRANSLATE_X = 0;
-GLfloat TRANSLATE_USER_Y = 3;
 
 GLfloat LOOK_X = 0;
 GLfloat LOOK_Y = 5;
 GLfloat LOOK_Z = 0;
-
-GLfloat ROTATE = 0;
 
 GLint    msec = 1;					//.. definicao do timer (actualizacao)
 

@@ -1,21 +1,30 @@
 #include "render.h"
 
 void Render::setup_lights() {
+
+  glBegin(GL_POLYGON);
+
+glVertex3f( -5, -5, -5);       // P1
+glVertex3f( -5,  5, -5);       // P2
+glVertex3f(  5,  5, -5);       // P3
+glVertex3f(  5, -5, -5);       // P4
+
+glEnd();
   // initializes variables
   GLfloat light0_amb[4] = {1.0, 0.0, 0.0, 1.0};
   GLfloat light0_dif[4] = {1.0, 0.0, 0.0, 1.0};
   GLfloat light0_spec[4] = {1.0, 0.0, 0.0, 1.0};
-  GLfloat light0_pos[4] = {15.0, 1.0, 1.0};
+  GLfloat light0_pos[4] = {5.0, 5.0, 5.0};
 
   GLfloat light1_amb[4] = {0.0, 1.0, 0.0, 1.0};
   GLfloat light1_dif[4] = {0.0, 1.0, 0.0, 1.0};
   GLfloat light1_spec[4] = {0.0, 1.0, 0.0, 1.0};
-  GLfloat light1_pos[4] = {1.0, 10.0, 1.0};
+  GLfloat light1_pos[4] = {5.0, 5.0, 5.0};
 
   GLfloat light2_amb[4] = {0.0, 0.0, 1.0, 1.0};
   GLfloat light2_dif[4] = {0.0, 0.0, 1.0, 1.0};
   GLfloat light2_spec[4] = {0.0, 0.0, 1.0, 1.0};
-  GLfloat light2_pos[4] = {1.0, 1.0, 1.0};
+  GLfloat light2_pos[4] = {5.0, 5.0, 5.0};
 
   glEnable(GL_LIGHT0);
   glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_pos);

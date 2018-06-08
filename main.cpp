@@ -17,6 +17,8 @@ void inicializa(void) {
   render.setup_lights();
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
+  glEnable(GL_LIGHT1);
+  glEnable(GL_LIGHT2);
 
   render.setup_default_textures();
   render.setup_cubemap_textures();
@@ -146,17 +148,6 @@ void createCans() {
 }
 
 
-void drawScene(){
-  //glCullFace(GL_FRONT);
-
-  glTranslated(TRANSLATE_X, 0, 0);
-  glTranslated(0, 2, 0);
-  glRotated(ROTATE, 1, 0, 0);
-  glTranslated(0, -2, 0);
-
-  createCans();
-}
-
 void display(void){
   // Apaga ecra/profundidade
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -167,11 +158,11 @@ void display(void){
   gluPerspective(angZoom, (float) wScreen / hScreen, 0.1, 5 * zC);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(rVisao * cos(aVisao), obsP[1] + TRANSLATE_USER_Y, rVisao * sin(aVisao), LOOK_X, LOOK_Y, LOOK_Z, 0, 1, 0);
+  gluLookAt(rVisao * cos(aVisao), obsP[1], rVisao * sin(aVisao), LOOK_X, LOOK_Y, LOOK_Z, 0, 1, 0);
 
   // Objectos
   render.render_cubemap();
-  drawScene();
+  createCans();
 
   // Actualizacao
   glutSwapBuffers();
@@ -193,18 +184,6 @@ void keyboard(unsigned char key, int x, int y){
         rVisao += 1;
         glutPostRedisplay();
       }
-      break;
-
-     // utilizador para baixo
-    case 'u':
-      TRANSLATE_USER_Y -= 1;
-      glutPostRedisplay();
-      break;
-
-    // utilizador para cima
-    case 'i':
-      TRANSLATE_USER_Y += 1;
-      glutPostRedisplay();
       break;
 
     // modificar o ponto para onde o utilizar esta a olha no eixo dos x
@@ -243,26 +222,6 @@ void keyboard(unsigned char key, int x, int y){
       glutPostRedisplay();
       break;
 
-    case 'a':
-      TRANSLATE_X += 1;
-      glutPostRedisplay();
-      break;
-
-    case 's':
-      TRANSLATE_X -= 1;
-      glutPostRedisplay();
-      break;
-
-    case 'd':
-      ROTATE -= 10;
-      glutPostRedisplay();
-      break;
-
-    case 'f':
-      ROTATE += 10;
-      glutPostRedisplay();
-      break;
-
     case 'z':
       generateCan();
       glutPostRedisplay();
@@ -285,20 +244,12 @@ void keyboard(unsigned char key, int x, int y){
 }
 
 void teclasNotAscii(int key, int x, int y){
-  if(key == GLUT_KEY_UP) {
-    obsP[1] = (obsP[1] +  0.1);
+  if(key == GLUT_KEY_UP && obsP[1] < yC/2) {
+    obsP[1] = (obsP[1] + 1);
   }
 
-  if(key == GLUT_KEY_DOWN) {
-    obsP[1] = (obsP[1] - 0.1);
-  }
-
-  if (obsP[1] > yC) {
-    obsP[1] = yC;
-  }
-
-  if (obsP[1] < -yC) {
-    obsP[1] = -yC;
+  if(key == GLUT_KEY_DOWN && obsP[1] > -yC/2) {
+    obsP[1] = (obsP[1] - 1);
   }
 
   if(key == GLUT_KEY_LEFT) {
