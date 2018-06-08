@@ -99,17 +99,17 @@ void createCans() {
     angRotateZ[i] = angRotateZ[i] + incAngRotate;
 
     // translate can accordingly
-    if (translateCanY[i] > yC/2 || translateCanY[i] < -yC/2) {
+    if (translateCanY[i] > yC || translateCanY[i] < -yC) {
       incTranslateCanY[i] = incTranslateCanY[i] * -1;
     }
     translateCanY[i] = translateCanY[i] + incTranslateCanY[i];
 
-    if (translateCanX[i] > yC/2 || translateCanX[i] < -yC/2) {
+    if (translateCanX[i] > xC/2 || translateCanX[i] < -xC/2) {
       incTranslateCanX[i] = incTranslateCanX[i] * -1;
     }
     translateCanX[i] = translateCanX[i] + incTranslateCanX[i];
 
-    if (translateCanZ[i] > yC/2 || translateCanZ[i] < -yC/2) {
+    if (translateCanZ[i] > zC/2 || translateCanZ[i] < -zC/2) {
       incTranslateCanZ[i] = incTranslateCanZ[i] * -1;
     }
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
