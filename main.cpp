@@ -15,7 +15,6 @@ void inicializa(void) {
   render.setup_lights();
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
-  glEnable(GL_LIGHT1);
 
   render.setup_default_textures();
   render.setup_cubemap_textures();
@@ -100,16 +99,22 @@ void createCans() {
 
     // translate can accordingly
     if (translateCanY[i] > yC || translateCanY[i] < -yC) {
+      glDisable(GL_LIGHT0);
+      glEnable(GL_LIGHT1);
       incTranslateCanY[i] = incTranslateCanY[i] * -1;
     }
     translateCanY[i] = translateCanY[i] + incTranslateCanY[i];
 
     if (translateCanX[i] > xC/2 || translateCanX[i] < -xC/2) {
+      glDisable(GL_LIGHT1);
+      glEnable(GL_LIGHT2);
       incTranslateCanX[i] = incTranslateCanX[i] * -1;
     }
     translateCanX[i] = translateCanX[i] + incTranslateCanX[i];
 
     if (translateCanZ[i] > zC/2 || translateCanZ[i] < -zC/2) {
+      glDisable(GL_LIGHT2);
+      glEnable(GL_LIGHT0);
       incTranslateCanZ[i] = incTranslateCanZ[i] * -1;
     }
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
@@ -327,6 +332,7 @@ int main(int argc, char** argv){
 
   glDisable(GL_LIGHT0);
   glDisable(GL_LIGHT1);
+  glDisable(GL_LIGHT2);
 
   return 0;
 }
