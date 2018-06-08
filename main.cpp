@@ -9,8 +9,10 @@ int generate_random_int_number(int max) {
 }
 
 void inicializa(void) {
-  glClearColor(BLACK);		// Apagar
-  glShadeModel(GL_SMOOTH);	// Interpolacao de cores
+  // Apagar
+  glClearColor(BLACK);
+  // Interpolacao de cores
+  glShadeModel(GL_SMOOTH);
 
   render.setup_lights();
   glEnable(GL_LIGHTING);
@@ -19,37 +21,16 @@ void inicializa(void) {
 
   render.setup_default_textures();
   render.setup_cubemap_textures();
-  glEnable(GL_TEXTURE_2D);  // Ativar modo textura
+  // Ativar modo textura
+  glEnable(GL_TEXTURE_2D);
 
-  glVertexPointer(3, GL_FLOAT, 0, vertices); //Vertex arrays
+  // Vertex arrays
+  glVertexPointer(3, GL_FLOAT, 0, vertices);
   glEnableClientState(GL_VERTEX_ARRAY);
   glNormalPointer(GL_FLOAT, 0, normais);
   glEnableClientState(GL_NORMAL_ARRAY);
   glColorPointer(3, GL_FLOAT, 0, cor);
   glEnableClientState(GL_COLOR_ARRAY);
-}
-
-void drawEixos() {
-  // Eixo X
-  glColor4f(RED);
-  glBegin(GL_LINES);
-  glVertex3i(0, 0, 0);
-  glVertex3i(10, 0, 0);
-  glEnd();
-
-  // Eixo Y
-  glColor4f(GREEN);
-  glBegin(GL_LINES);
-  glVertex3i(0,  0, 0);
-  glVertex3i(0, 10, 0);
-  glEnd();
-
-  // Eixo Z
-  glColor4f(BLUE);
-  glBegin(GL_LINES);
-  glVertex3i(0, 0, 0);
-  glVertex3i(0, 0, 10);
-  glEnd();
 }
 
 void generateCan() {
@@ -93,7 +74,7 @@ void createCans() {
   glEnable(GL_TEXTURE_2D);
 
   for (int i = 0; i < NUMBER_OF_CANS; i++) {
-    // raise rotation angle
+    // increment rotation angle
     angRotateX[i] = angRotateX[i] + incAngRotate;
     angRotateY[i] = angRotateY[i] + incAngRotate;
     angRotateZ[i] = angRotateZ[i] + incAngRotate;
@@ -135,10 +116,10 @@ void createCans() {
       glRotatef (angRotateY[i], 0, 1, 0);
       glRotatef (angRotateZ[i], 0, 0, 1);
 
-      gluQuadricDrawStyle ( yy, GLU_FILL   );
-      gluQuadricNormals   ( yy, GLU_SMOOTH );
-      gluQuadricTexture   ( yy, GL_TRUE    );
-      // void gluCylinder(	GLUquadric* quad, GLdouble base, GLdouble top, GLdouble height, GLint slices, GLint stacks);
+      gluQuadricDrawStyle (yy, GLU_FILL);
+      gluQuadricNormals   (yy, GLU_SMOOTH);
+      gluQuadricTexture   (yy, GL_TRUE);
+      // void gluCylinder(GLUquadric* quad, GLdouble base, GLdouble top, GLdouble height, GLint slices, GLint stacks);
       gluCylinder(yy, 0.5, 0.5, 1.75, 100, 100);
 
       // top of cylinder
@@ -155,7 +136,6 @@ void createCans() {
       glPopMatrix();
 
     glPopMatrix();
-
   }
   glDisable(GL_TEXTURE_2D);
 }
@@ -179,13 +159,12 @@ void display(void){
   glViewport (0, 0, wScreen, hScreen);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(angZoom, (float)wScreen/hScreen, 0.1, 5*zC);
+  gluPerspective(angZoom, (float) wScreen / hScreen, 0.1, 5 * zC);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(rVisao*cos(aVisao), obsP[1] + TRANSLATE_USER_Y, rVisao*sin(aVisao), LOOK_X, LOOK_Y, LOOK_Z, 0, 1, 0);
+  gluLookAt(rVisao * cos(aVisao), obsP[1] + TRANSLATE_USER_Y, rVisao * sin(aVisao), LOOK_X, LOOK_Y, LOOK_Z, 0, 1, 0);
 
   // Objectos
-  // drawEixos();
   render.render_cubemap();
   drawScene();
 
@@ -197,82 +176,103 @@ void keyboard(unsigned char key, int x, int y){
   switch (key) {
     // aproxima do centro ao inicio
     case 'o':
-      rVisao -= 1;
-      glutPostRedisplay();
+      if (rVisao > 1) {
+        rVisao -= 1;
+        glutPostRedisplay();
+      }
       break;
+
     // afasta do centro ao inicio
     case 'p':
-      rVisao += 1;
-      glutPostRedisplay();
+      if (rVisao < 20) {
+        rVisao += 1;
+        glutPostRedisplay();
+      }
       break;
+
      // utilizador para baixo
     case 'u':
       TRANSLATE_USER_Y -= 1;
       glutPostRedisplay();
       break;
+
     // utilizador para cima
     case 'i':
       TRANSLATE_USER_Y += 1;
       glutPostRedisplay();
       break;
+
     // modificar o ponto para onde o utilizar esta a olha no eixo dos x
     case 'q':
       LOOK_X += -1;
       glutPostRedisplay();
       break;
+
     // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
     case 'w':
       LOOK_X += 1;
       glutPostRedisplay();
       break;
+
     // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
     case 'e':
       LOOK_Y += -1;
       glutPostRedisplay();
       break;
+
     // modificar o ponto para onde o utilizar esta a olha no eixo dos yy
     case 'r':
       LOOK_Y += 1;
       glutPostRedisplay();
       break;
+
     // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
     case 't':
       LOOK_Z += -1;
       glutPostRedisplay();
       break;
+
     // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
     case 'y':
       LOOK_Z += 1;
       glutPostRedisplay();
       break;
+
     case 'a':
       TRANSLATE_X += 1;
       glutPostRedisplay();
       break;
+
     case 's':
       TRANSLATE_X -= 1;
       glutPostRedisplay();
       break;
+
     case 'd':
       ROTATE -= 10;
       glutPostRedisplay();
       break;
+
     case 'f':
       ROTATE += 10;
       glutPostRedisplay();
       break;
+
     case 'z':
       generateCan();
       glutPostRedisplay();
       break;
+
     case '.':
       glEnable(GL_LIGHT0);
       glDisable(GL_LIGHT1);
       break;
+
     case '-':
       glEnable(GL_LIGHT1);
       glDisable(GL_LIGHT0);
       break;
+
     case 27:
       exit(0);
       break;
@@ -280,24 +280,31 @@ void keyboard(unsigned char key, int x, int y){
 }
 
 void teclasNotAscii(int key, int x, int y){
+  if(key == GLUT_KEY_UP) {
+    obsP[1] = (obsP[1] +  0.1);
+  }
 
-  if(key == GLUT_KEY_UP)
-    obsP[1] = (obsP[1]+ 0.1) ;
-  if(key == GLUT_KEY_DOWN)
-    obsP[1] = (obsP[1]- 0.1) ;
+  if(key == GLUT_KEY_DOWN) {
+    obsP[1] = (obsP[1] - 0.1);
+  }
 
-  if (obsP[1]>yC)
-    obsP[1]=yC;
-  if (obsP[1]<-yC)
-    obsP[1]=-yC;
+  if (obsP[1] > yC) {
+    obsP[1] = yC;
+  }
 
-  if(key == GLUT_KEY_LEFT)
-    aVisao = (aVisao + 0.1) ;
-  if(key == GLUT_KEY_RIGHT)
-    aVisao = (aVisao - 0.1) ;
+  if (obsP[1] < -yC) {
+    obsP[1] = -yC;
+  }
 
-  obsP[0] = rVisao*cos(aVisao);
-  obsP[2] = rVisao*sin(aVisao);
+  if(key == GLUT_KEY_LEFT) {
+    aVisao = (aVisao + 0.1);
+  }
+  if(key == GLUT_KEY_RIGHT) {
+    aVisao = (aVisao - 0.1);
+  }
+
+  obsP[0] = rVisao * cos(aVisao);
+  obsP[2] = rVisao * sin(aVisao);
 
   glutPostRedisplay();
 }
@@ -314,6 +321,7 @@ int main(int argc, char** argv){
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
   glutInitWindowSize (wScreen, hScreen);
   glutInitWindowPosition (300, 100);
+  // TODO -> in create window write commands
   glutCreateWindow ("");
 
   inicializa();
@@ -327,6 +335,5 @@ int main(int argc, char** argv){
 
   glDisable(GL_LIGHT0);
   glDisable(GL_LIGHT1);
-
   return 0;
 }
