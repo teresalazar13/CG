@@ -1,21 +1,5 @@
 #include "render.h"
 
-void Render::setup_particle_texture() {
-  //----------------------------------------- Cubo
-  glGenTextures(1, &particle_texture[0]);
-  imag.LoadBmpFile("particle.bmp");
-  glBindTexture(GL_TEXTURE_2D, particle_texture[0]);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-  glTexImage2D(GL_TEXTURE_2D, 0, 3,
-    imag.GetNumCols(),
-    imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-    imag.ImageData());
-}
-
 void Render::setup_particles(GLfloat px, GLfloat py, GLfloat pz) {
   GLfloat v, theta, phi;
   GLfloat ps;
@@ -131,55 +115,55 @@ void Render::render_cubemap() {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, wall);
     glBegin(GL_POLYGON);
-      glTexCoord2f(1.0f, 0.0f); glVertex3f(-20, -20, -20);
-      glTexCoord2f(0.0f, 0.0f); glVertex3f(-20, -20, 20);
-      glTexCoord2f(0.0f, 1.0f); glVertex3f(-20, 20, 20);
+      glTexCoord2f(1.0f, 0.15f); glVertex3f(-20, -20, -20);
+      glTexCoord2f(0.15f, 0.15f); glVertex3f(-20, -20, 20);
+      glTexCoord2f(0.15f, 1.0f); glVertex3f(-20, 20, 20);
       glTexCoord2f(1.0f, 1.0f); glVertex3f(-20, 20, -20);
     glEnd();
 
     //top
     glBindTexture(GL_TEXTURE_2D, wall);
     glBegin(GL_POLYGON);
-      glTexCoord2f(1.0f, 0.0f); glVertex3f(20, 20, -20);
+      glTexCoord2f(1.0f, 0.15f); glVertex3f(20, 20, -20);
       glTexCoord2f(1.0f, 1.0f); glVertex3f(20, 20, 20);
-      glTexCoord2f(0.0f, 1.0f); glVertex3f(-20, 20, 20);
-      glTexCoord2f(0.0f, 0.0f); glVertex3f(-20, 20, -20);
+      glTexCoord2f(0.15f, 1.0f); glVertex3f(-20, 20, 20);
+      glTexCoord2f(0.15f, 0.15f); glVertex3f(-20, 20, -20);
     glEnd();
 
     // right
     glBindTexture(GL_TEXTURE_2D, wall);
     glBegin(GL_POLYGON);
-      glTexCoord2f(0.0f, 0.0f); glVertex3f(20, -20, -20);
-      glTexCoord2f(1.0f, 0.0f); glVertex3f(20, -20, 20);
+      glTexCoord2f(0.15f, 0.15f); glVertex3f(20, -20, -20);
+      glTexCoord2f(1.0f, 0.15f); glVertex3f(20, -20, 20);
       glTexCoord2f(1.0f, 1.0f); glVertex3f(20, 20, 20);
-      glTexCoord2f(0.0f, 1.0f); glVertex3f(20, 20, -20);
+      glTexCoord2f(0.15f, 1.0f); glVertex3f(20, 20, -20);
     glEnd();
 
     // front
     glBindTexture(GL_TEXTURE_2D, wall);
     glBegin(GL_POLYGON);
-      glTexCoord2f(1.0f, 0.0f); glVertex3f(20, -20, -20);
+      glTexCoord2f(1.0f, 0.15f); glVertex3f(20, -20, -20);
       glTexCoord2f(1.0f, 1.0f); glVertex3f(20, 20, -20);
-      glTexCoord2f(0.0f, 1.0f); glVertex3f(-20, 20, -20);
-      glTexCoord2f(0.0f, 0.0f); glVertex3f(-20, -20, -20);
+      glTexCoord2f(0.15f, 1.0f); glVertex3f(-20, 20, -20);
+      glTexCoord2f(0.15f, 0.15f); glVertex3f(-20, -20, -20);
     glEnd();
 
     //back
     glBindTexture(GL_TEXTURE_2D, wall);
     glBegin(GL_POLYGON);
-      glTexCoord2f(0.0f, 0.0f); glVertex3f(20, -20, 20);
-      glTexCoord2f(0.0f, 1.0f); glVertex3f(20, 20, 20);
+      glTexCoord2f(0.15f, 0.15f); glVertex3f(20, -20, 20);
+      glTexCoord2f(0.15f, 1.0f); glVertex3f(20, 20, 20);
       glTexCoord2f(1.0f, 1.0f); glVertex3f(-20, 20, 20);
-      glTexCoord2f(1.0f, 0.0f); glVertex3f(-20, -20, 20);
+      glTexCoord2f(1.0f, 0.15f); glVertex3f(-20, -20, 20);
     glEnd();
 
     //bottom
     glBindTexture(GL_TEXTURE_2D, wall);
     glBegin(GL_POLYGON);
-      glTexCoord2f(1.0f, 0.0f); glVertex3f(-20, -20, 20);
+      glTexCoord2f(1.0f, 0.15f); glVertex3f(-20, -20, 20);
       glTexCoord2f(1.0f, 1.0f); glVertex3f(20, -20, 20);
-      glTexCoord2f(0.0f, 1.0f); glVertex3f(20, -20, -20);
-      glTexCoord2f(0.0f, 0.0f); glVertex3f(-20, -20, -20);
+      glTexCoord2f(0.15f, 1.0f); glVertex3f(20, -20, -20);
+      glTexCoord2f(0.15f, 0.15f); glVertex3f(-20, -20, -20);
     glEnd();
     glDisable(GL_TEXTURE_2D);
   glPopMatrix();

@@ -38,7 +38,6 @@ class Render {
     RgbImage imag;
     Particle particle[2500];
 
-    void setup_particle_texture();
     void setup_particles(GLfloat px, GLfloat py, GLfloat pz);
     void setup_lights();
     void setup_default_textures();
