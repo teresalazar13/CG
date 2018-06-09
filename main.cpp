@@ -24,14 +24,11 @@ void inicializa(void) {
 
   // Ativar modo textura
   glEnable(GL_TEXTURE_2D);
-  render.setup_particle_texture();
   render.setup_default_textures();
   render.setup_cubemap_textures();
   glDisable(GL_TEXTURE_2D);
-  render.setup_particles();
-  
-  glEnable(GL_DEPTH_TEST);
 
+  glEnable(GL_DEPTH_TEST);
 }
 
 void generateCan() {
@@ -72,8 +69,6 @@ void generateCan() {
 
 //==================================== Lata
 void createCans() {
-  glEnable(GL_TEXTURE_2D);
-
   for (int i = 0; i < NUMBER_OF_CANS; i++) {
     // increment rotation angle
     angRotateX[i] = angRotateX[i] + incAngRotate;
@@ -85,12 +80,8 @@ void createCans() {
       glDisable(GL_LIGHT0);
       glEnable(GL_LIGHT1);
       incTranslateCanY[i] = incTranslateCanY[i] * -1;
-
-      glEnable(GL_BLEND);	        		
-      glBlendFunc(GL_SRC_ALPHA,GL_ONE);	
-      glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
+      render.setup_particles(translateCanX[i], translateCanY[i], translateCanZ[i]);
       render.render_particle();
-      glDisable(GL_BLEND);	        		
     }
     translateCanY[i] = translateCanY[i] + incTranslateCanY[i];
 
@@ -98,11 +89,8 @@ void createCans() {
       glDisable(GL_LIGHT1);
       glEnable(GL_LIGHT2);
       incTranslateCanX[i] = incTranslateCanX[i] * -1;
-      glEnable(GL_BLEND);	        		
-      glBlendFunc(GL_SRC_ALPHA,GL_ONE);	
-      glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
+      render.setup_particles(translateCanX[i], translateCanY[i], translateCanZ[i]);
       render.render_particle();
-      glDisable(GL_BLEND);	        		
     }
     translateCanX[i] = translateCanX[i] + incTranslateCanX[i];
 
@@ -110,13 +98,13 @@ void createCans() {
       glDisable(GL_LIGHT2);
       glEnable(GL_LIGHT0);
       incTranslateCanZ[i] = incTranslateCanZ[i] * -1;
-      glEnable(GL_BLEND);	        		
+      render.setup_particles(translateCanX[i], translateCanY[i], translateCanZ[i]);
       render.render_particle();
-      glDisable(GL_BLEND);	        		
     }
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
 
     // bind texture to can
+    glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, render.texture[cans[i].texture]);
     GLUquadricObj* yy = gluNewQuadric();
 
@@ -148,7 +136,6 @@ void createCans() {
 
     glPopMatrix();
   }
-  glDisable(GL_TEXTURE_2D);
 }
 
 
@@ -270,7 +257,6 @@ void teclasNotAscii(int key, int x, int y){
 }
 
 void Timer(int value){
-  render.setup_particles();
   glutPostRedisplay();
   glutTimerFunc(msec, Timer, 1);
 }

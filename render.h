@@ -14,6 +14,8 @@
 #include "RgbImage.h"
 using namespace std;
 
+#define NUMBER_OF_PARTICLES 1000
+
 
 // Particles variables
 typedef struct {
@@ -22,7 +24,7 @@ typedef struct {
   float	fade;		// fade
   float	r, g, b;    // color
   GLfloat x, y, z;    // posicao
-  GLfloat vx, vy, vz; // velocidade 
+  GLfloat vx, vy, vz; // velocidade
   GLfloat ax, ay, az; // aceleracao
 } Particle;
 
@@ -36,7 +38,7 @@ class Render {
     Particle particle[2500];
 
     void setup_particle_texture();
-    void setup_particles();
+    void setup_particles(GLfloat px, GLfloat py, GLfloat pz);
     void setup_lights();
     void setup_default_textures();
     void setup_cubemap_textures();
