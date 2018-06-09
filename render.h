@@ -15,7 +15,7 @@
 using namespace std;
 
 #define NUMBER_OF_PARTICLES 1000
-
+#define NUMBER_OF_CAN_TEXTURES 6
 
 // Particles variables
 typedef struct {
@@ -28,12 +28,13 @@ typedef struct {
   GLfloat ax, ay, az; // aceleracao
 } Particle;
 
+
 // Class responsible for the renderization funcctions
 class Render {
   public:
     GLuint  particle_texture[1];
-    GLuint  skyboxtex[1];
-    GLuint  texture[3];
+    GLuint  wall;
+    GLuint  texture[NUMBER_OF_CAN_TEXTURES];
     RgbImage imag;
     Particle particle[2500];
 

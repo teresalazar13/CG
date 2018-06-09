@@ -58,11 +58,9 @@ void generateCan() {
     translateCanZ[NUMBER_OF_CANS] = translateCanZ_;
     incTranslateCanZ[NUMBER_OF_CANS] = 0.1;
 
-    rand_texture = generate_random_int_number(3);
-    rand_color = generate_random_int_number(4);
+    rand_texture = generate_random_int_number(NUMBER_OF_CAN_TEXTURES);
 
     cans[NUMBER_OF_CANS].texture = rand_texture;
-    cans[NUMBER_OF_CANS].color = rand_color;
     NUMBER_OF_CANS++;
   }
 }

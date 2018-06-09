@@ -129,7 +129,7 @@ void Render::render_cubemap() {
 
     //left
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D,skyboxtex[0]);
+    glBindTexture(GL_TEXTURE_2D, wall);
     glBegin(GL_POLYGON);
       glTexCoord2f(1.0f, 0.0f); glVertex3f(-20, -20, -20);
       glTexCoord2f(0.0f, 0.0f); glVertex3f(-20, -20, 20);
@@ -138,7 +138,7 @@ void Render::render_cubemap() {
     glEnd();
 
     //top
-    glBindTexture(GL_TEXTURE_2D,skyboxtex[0]);
+    glBindTexture(GL_TEXTURE_2D, wall);
     glBegin(GL_POLYGON);
       glTexCoord2f(1.0f, 0.0f); glVertex3f(20, 20, -20);
       glTexCoord2f(1.0f, 1.0f); glVertex3f(20, 20, 20);
@@ -147,7 +147,7 @@ void Render::render_cubemap() {
     glEnd();
 
     // right
-    glBindTexture(GL_TEXTURE_2D,skyboxtex[0]);
+    glBindTexture(GL_TEXTURE_2D, wall);
     glBegin(GL_POLYGON);
       glTexCoord2f(0.0f, 0.0f); glVertex3f(20, -20, -20);
       glTexCoord2f(1.0f, 0.0f); glVertex3f(20, -20, 20);
@@ -156,7 +156,7 @@ void Render::render_cubemap() {
     glEnd();
 
     // front
-    glBindTexture(GL_TEXTURE_2D,skyboxtex[0]);
+    glBindTexture(GL_TEXTURE_2D, wall);
     glBegin(GL_POLYGON);
       glTexCoord2f(1.0f, 0.0f); glVertex3f(20, -20, -20);
       glTexCoord2f(1.0f, 1.0f); glVertex3f(20, 20, -20);
@@ -165,7 +165,7 @@ void Render::render_cubemap() {
     glEnd();
 
     //back
-    glBindTexture(GL_TEXTURE_2D,skyboxtex[0]);
+    glBindTexture(GL_TEXTURE_2D, wall);
     glBegin(GL_POLYGON);
       glTexCoord2f(0.0f, 0.0f); glVertex3f(20, -20, 20);
       glTexCoord2f(0.0f, 1.0f); glVertex3f(20, 20, 20);
@@ -174,7 +174,7 @@ void Render::render_cubemap() {
     glEnd();
 
     //bottom
-    glBindTexture(GL_TEXTURE_2D,skyboxtex[0]);
+    glBindTexture(GL_TEXTURE_2D, wall);
     glBegin(GL_POLYGON);
       glTexCoord2f(1.0f, 0.0f); glVertex3f(-20, -20, 20);
       glTexCoord2f(1.0f, 1.0f); glVertex3f(20, -20, 20);
@@ -194,7 +194,7 @@ void Render::setup_default_textures() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-  imag.LoadBmpFile("textures/coke.bmp");
+  imag.LoadBmpFile("textures/coke_red.bmp");
   glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
 
   glGenTextures(1, &texture[1]);
@@ -203,7 +203,7 @@ void Render::setup_default_textures() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  imag.LoadBmpFile("textures/coke.bmp");
+  imag.LoadBmpFile("textures/coke_pink.bmp");
   glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
 
   glGenTextures(1, &texture[2]);
@@ -212,19 +212,47 @@ void Render::setup_default_textures() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  imag.LoadBmpFile("textures/coke.bmp");
+  imag.LoadBmpFile("textures/coke_orange.bmp");
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+
+  glGenTextures(1, &texture[3]);
+  glBindTexture(GL_TEXTURE_2D, texture[3]);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  imag.LoadBmpFile("textures/coke_blue.bmp");
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+  glGenTextures(1, &texture[4]);
+  glBindTexture(GL_TEXTURE_2D, texture[4]);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  imag.LoadBmpFile("textures/coke_green.bmp");
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+  glGenTextures(1, &texture[5]);
+  glBindTexture(GL_TEXTURE_2D, texture[5]);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  imag.LoadBmpFile("textures/coke_yellow.bmp");
   glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
 }
 
 
 void Render::setup_cubemap_textures() {
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-  glGenTextures(1, &skyboxtex[0]);
-  glBindTexture(GL_TEXTURE_2D, skyboxtex[0]);
+  glGenTextures(1, &wall);
+  glBindTexture(GL_TEXTURE_2D,  wall);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  imag.LoadBmpFile("textures/front.bmp");
+  imag.LoadBmpFile("textures/wall.bmp");
   glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
 }

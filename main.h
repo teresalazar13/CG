@@ -24,10 +24,10 @@ using namespace std;
 #define BLACK     0.0, 0.0, 0.0, 1.0
 #define PI	  3.14159
 
+
 // saves info needed to render can
 struct Can {
   int texture;
-  int color;
 };
 
 // number of cans possible
@@ -129,8 +129,6 @@ int NUMBER_OF_CANS = 0;
 
 // meter varios tipos de focos com angulos diferentes e cores diferentes
 // 1;0;0 para amb dif e especular faz um foco vermelhokk
-
-GLfloat colors[4][4] = {BLUE, RED, YELLOW, GREEN};
 
 // Object with methods needed to render
 Render render;
