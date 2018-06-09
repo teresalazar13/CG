@@ -14,16 +14,22 @@ void inicializa(void) {
   // Interpolacao de cores
   glShadeModel(GL_SMOOTH);
 
-  render.setup_lights();
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
-  glEnable(GL_LIGHT1);
-  glEnable(GL_LIGHT2);
+  glEnable(GL_DEPTH_TEST);
 
-  render.setup_default_textures();
-  render.setup_cubemap_textures();
+  render.setup_lights();
+  //glEnable(GL_LIGHTING);
+  //glEnable(GL_LIGHT0);
+  //glEnable(GL_LIGHT1);
+  //glEnable(GL_LIGHT2);
+
   // Ativar modo textura
   glEnable(GL_TEXTURE_2D);
+  render.setup_particle_texture();
+  render.setup_default_textures();
+  render.setup_cubemap_textures();
+  glDisable(GL_TEXTURE_2D);
+  render.setup_particles();
+  
   glEnable(GL_DEPTH_TEST);
 
 }
@@ -79,6 +85,12 @@ void createCans() {
       glDisable(GL_LIGHT0);
       glEnable(GL_LIGHT1);
       incTranslateCanY[i] = incTranslateCanY[i] * -1;
+
+      glEnable(GL_BLEND);	        		
+      glBlendFunc(GL_SRC_ALPHA,GL_ONE);	
+      glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
+      render.render_particle();
+      glDisable(GL_BLEND);	        		
     }
     translateCanY[i] = translateCanY[i] + incTranslateCanY[i];
 
@@ -86,6 +98,11 @@ void createCans() {
       glDisable(GL_LIGHT1);
       glEnable(GL_LIGHT2);
       incTranslateCanX[i] = incTranslateCanX[i] * -1;
+      glEnable(GL_BLEND);	        		
+      glBlendFunc(GL_SRC_ALPHA,GL_ONE);	
+      glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
+      render.render_particle();
+      glDisable(GL_BLEND);	        		
     }
     translateCanX[i] = translateCanX[i] + incTranslateCanX[i];
 
@@ -93,6 +110,9 @@ void createCans() {
       glDisable(GL_LIGHT2);
       glEnable(GL_LIGHT0);
       incTranslateCanZ[i] = incTranslateCanZ[i] * -1;
+      glEnable(GL_BLEND);	        		
+      render.render_particle();
+      glDisable(GL_BLEND);	        		
     }
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
 
@@ -250,6 +270,7 @@ void teclasNotAscii(int key, int x, int y){
 }
 
 void Timer(int value){
+  render.setup_particles();
   glutPostRedisplay();
   glutTimerFunc(msec, Timer, 1);
 }
