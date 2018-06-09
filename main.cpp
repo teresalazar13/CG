@@ -117,19 +117,21 @@ void createCans() {
       gluQuadricNormals   (yy, GLU_SMOOTH);
       gluQuadricTexture   (yy, GL_TRUE);
       // void gluCylinder(GLUquadric* quad, GLdouble base, GLdouble top, GLdouble height, GLint slices, GLint stacks);
-      gluCylinder(yy, 0.5, 0.5, 1.75, 100, 100);
+      gluCylinder(yy, 0.4, 0.4, 1.75, 100, 100);
+
+      glBindTexture(GL_TEXTURE_2D, render.texture[NUMBER_OF_CAN_TEXTURES]);
 
       // top of cylinder
       glPushMatrix();
         glTranslated(0.0f, 0.0f, 1.75);
         // (quad, inner, outer, slices, loops)
-        gluDisk(yy, 0.0f, 0.5, 100, 100);
+        gluDisk(yy, 0.0f, 0.4, 100, 100);
       glPopMatrix();
 
       // bottom of cylinder
       glPushMatrix();
         // (quad, inner, outer, slices, loops)
-        gluDisk(yy, 0.0f, 0.5, 100, 100);
+        gluDisk(yy, 0.0f, 0.4, 100, 100);
       glPopMatrix();
 
     glPopMatrix();

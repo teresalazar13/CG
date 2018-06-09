@@ -32,9 +32,9 @@ typedef struct {
 // Class responsible for the renderization funcctions
 class Render {
   public:
-    GLuint  particle_texture[1];
-    GLuint  wall;
-    GLuint  texture[NUMBER_OF_CAN_TEXTURES];
+    GLuint particle_texture[1];
+    GLuint wall;
+    GLuint texture[NUMBER_OF_CAN_TEXTURES + 2];
     RgbImage imag;
     Particle particle[2500];
 

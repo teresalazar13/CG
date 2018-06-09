@@ -73,13 +73,6 @@ void Render::setup_lights() {
   GLfloat light2_pos[4] = {10.0, 0.0, 0.0, 1.0};
   GLfloat light2_dir[3] = {0.0, 1.0, 0.0};
 
-  glBegin(GL_POLYGON);
-    glVertex3f( -5, -5, -5);       // P1
-    glVertex3f( -5,  5, -5);       // P2
-    glVertex3f(  5,  5, -5);       // P3
-    glVertex3f(  5, -5, -5);       // P4
-  glEnd();
-
   glEnable(GL_LIGHT0);
     glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_pos);
     glLightfv(GL_LIGHT0, GL_AMBIENT, light0_amb);
@@ -199,7 +192,6 @@ void Render::setup_default_textures() {
   imag.LoadBmpFile("textures/coke_orange.bmp");
   glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
 
-
   glGenTextures(1, &texture[3]);
   glBindTexture(GL_TEXTURE_2D, texture[3]);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -225,6 +217,15 @@ void Render::setup_default_textures() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   imag.LoadBmpFile("textures/coke_yellow.bmp");
+  glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
+
+  glGenTextures(1, &texture[6]);
+  glBindTexture(GL_TEXTURE_2D, texture[6]);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  imag.LoadBmpFile("textures/top.bmp");
   glTexImage2D(GL_TEXTURE_2D, 0, 3, imag.GetNumCols(), imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE, imag.ImageData());
 }
 

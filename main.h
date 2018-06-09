@@ -90,22 +90,25 @@ static GLfloat cor[]={
 };
 
 //------------------------------------------------------------ Sistema Coordenadas + objectos
-GLint		wScreen=1600, hScreen=1200;		//.. janela (pixeis)
-GLfloat		xC=20.0, yC=20.0, zC=20.0;		//.. Mundo  (unidades mundo)
+GLint wScreen = 1600;
+GLint hScreen = 1200;		// janela (pixeis)
+GLfloat xC = 20.0;
+GLfloat yC = 20.0;
+GLfloat zC=20.0;		// Mundo
 
 //------------------------------------------------------------ Observador
-GLfloat  rVisao = 18, aVisao=0.5*PI, incVisao=0.05;
-GLfloat  obsP[] = {rVisao * cos(aVisao), 3, rVisao * sin(aVisao)};
-GLfloat  angZoom=90;
-GLfloat  incZoom=3;
-
-GLfloat TRANSLATE_X = 0;
+GLfloat rVisao = 18;
+GLfloat aVisao = 0.5 * PI;
+GLfloat incVisao = 0.05;
+GLfloat obsP[] = {rVisao * cos(aVisao), 3, rVisao * sin(aVisao)};
+GLfloat angZoom = 90;
+GLfloat incZoom = 3;
 
 GLfloat LOOK_X = 0;
 GLfloat LOOK_Y = 5;
 GLfloat LOOK_Z = 0;
 
-GLint    msec = 1;					//.. definicao do timer (actualizacao)
+GLint    msec = 1;					// definicao do timer (atualizacao)
 
 GLfloat  angRotateX[50] = {0};
 GLfloat  angRotateY[50] = {0};
@@ -123,7 +126,7 @@ GLfloat  translateCanZ[50] = {0};
 GLfloat  incTranslateCanZ[50] = {0.1};
 
 // number of existing cans
-int NUMBER_OF_CANS = 0;
+int NUMBER_OF_CANS = 1;
 
 //============================= Iluminacao
 
