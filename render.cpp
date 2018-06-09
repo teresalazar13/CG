@@ -1,16 +1,85 @@
 #include "render.h"
 
+void Render::setup_particle_texture() {
+  //----------------------------------------- Cubo
+  glGenTextures(1, &particle_texture[0]);
+  imag.LoadBmpFile("particle.bmp");
+  glBindTexture(GL_TEXTURE_2D, particle_texture[0]);
+  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+  glTexImage2D(GL_TEXTURE_2D, 0, 3,
+    imag.GetNumCols(),
+    imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+    imag.ImageData());        
+}
+
+void Render::setup_particles() {
+  GLfloat v, theta, phi;
+  GLfloat px, py, pz;
+  GLfloat ps;
+
+  px = -5.0;
+  py = 5.0;
+  pz = -5.0;
+  ps = 0.1;
+
+  for(int i=0; i<2500; i++)  {
+    //---------------------------------  
+    v     = 1*frand()+0.02;
+    theta = 2.0*frand()*M_PI;   // [0..2pi]
+    phi   = frand()*M_PI;		// [0.. pi]
+
+    particle[i].size = ps ;		// tamanh de cada particula
+    particle[i].x = px + 0.1*frand()*px;    // [-200 200]
+    particle[i].y = py + 0.1*frand()*py;	// [-200 200]
+    particle[i].z = pz + 0.1*frand()*pz;	// [-200 200]
+
+    particle[i].vx = v * cos(theta) * sin(phi);	// esferico
+    particle[i].vy = v * cos(phi);
+    particle[i].vz = v * sin(theta) * sin(phi);
+    particle[i].ax = 0.01f;
+    particle[i].ay = -0.01f;
+    particle[i].az = 0.015f;
+
+    particle[i].r = 1.0f;
+    particle[i].g = 1.0f;	
+    particle[i].b = 1.0f;	
+    particle[i].life = 1.0f;		                
+    particle[i].fade = 0.001f;	// Em 100=1/0.01 iteracoes desaparece
+  }
+}
+
+void Render::render_particle() {
+  for (int i=0; i<2500; i++) {
+    glColor4f(1,1,1, particle[i].life);
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, particle_texture[0]);
+    glBegin(GL_QUADS);				        
+      glTexCoord2d(0,0); glVertex3f(particle[i].x - particle[i].size, particle[i].y - particle[i].size, particle[i].z);      
+      glTexCoord2d(1,0); glVertex3f(particle[i].x + particle[i].size, particle[i].y - particle[i].size, particle[i].z);        
+      glTexCoord2d(1,1); glVertex3f(particle[i].x + particle[i].size, particle[i].y + particle[i].size, particle[i].z);            
+      glTexCoord2d(0,1); glVertex3f(particle[i].x - particle[i].size, particle[i].y + particle[i].size, particle[i].z);       
+    glEnd();	
+
+
+    particle[i].x += particle[i].vx;
+    particle[i].y += particle[i].vy;
+    particle[i].z += particle[i].vz;
+    particle[i].vx += particle[i].ax;
+    particle[i].vy += particle[i].ay;
+    particle[i].vz += particle[i].az;
+    particle[i].life -= particle[i].fade;	
+
+    glDisable(GL_TEXTURE_2D);
+  }
+}
+
 void Render::setup_lights() {
-
-  glBegin(GL_POLYGON);
-
-glVertex3f( -5, -5, -5);       // P1
-glVertex3f( -5,  5, -5);       // P2
-glVertex3f(  5,  5, -5);       // P3
-glVertex3f(  5, -5, -5);       // P4
-
-glEnd();
-  // initializes variables
+  // Light Variables
   GLfloat light0_amb[4] = {1.0, 0.0, 0.0, 1.0};
   GLfloat light0_dif[4] = {1.0, 0.0, 0.0, 1.0};
   GLfloat light0_spec[4] = {1.0, 0.0, 0.0, 1.0};
@@ -26,31 +95,38 @@ glEnd();
   GLfloat light2_spec[4] = {0.0, 0.0, 1.0, 1.0};
   GLfloat light2_pos[4] = {5.0, 5.0, 5.0};
 
+  glBegin(GL_POLYGON);
+    glVertex3f( -5, -5, -5);       // P1
+    glVertex3f( -5,  5, -5);       // P2
+    glVertex3f(  5,  5, -5);       // P3
+    glVertex3f(  5, -5, -5);       // P4
+  glEnd();
+
   glEnable(GL_LIGHT0);
-  glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_pos);
-  glLightfv(GL_LIGHT0, GL_AMBIENT, light0_amb);
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_dif);
-  glLightfv(GL_LIGHT0, GL_SPECULAR, light0_spec);
-  glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 120);
-  glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_pos);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, light0_amb);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_dif);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light0_spec);
+    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 120);
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
   glDisable(GL_LIGHT0);
 
   glEnable(GL_LIGHT1);
-  glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light1_pos);
-  glLightfv(GL_LIGHT1, GL_AMBIENT, light1_amb);
-  glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_dif);
-  glLightfv(GL_LIGHT0, GL_SPECULAR, light1_spec);
-  glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 120);
-  glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
+    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light1_pos);
+    glLightfv(GL_LIGHT1, GL_AMBIENT, light1_amb);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_dif);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light1_spec);
+    glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 120);
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
   glDisable(GL_LIGHT1);
 
   glEnable(GL_LIGHT2);
-  glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, light2_pos);
-  glLightfv(GL_LIGHT2, GL_AMBIENT, light2_amb);
-  glLightfv(GL_LIGHT2, GL_DIFFUSE, light2_dif);
-  glLightfv(GL_LIGHT0, GL_SPECULAR, light2_spec);
-  glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 120);
-  glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
+    glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, light2_pos);
+    glLightfv(GL_LIGHT2, GL_AMBIENT, light2_amb);
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, light2_dif);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light2_spec);
+    glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 120);
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
   glDisable(GL_LIGHT2);
 }
 
