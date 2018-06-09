@@ -9,10 +9,10 @@ int generate_random_int_number(int max) {
 }
 
 void inicializa(void) {
-  // Apagar
-  glClearColor(BLACK);
   // Interpolacao de cores
   glShadeModel(GL_SMOOTH);
+  // Apagar
+  glClearColor(BLACK);
 
   glEnable(GL_DEPTH_TEST);
 
@@ -29,6 +29,7 @@ void inicializa(void) {
   glDisable(GL_TEXTURE_2D);
 
   glEnable(GL_DEPTH_TEST);
+  rain.init_particles();
 }
 
 void generateCan() {
@@ -154,6 +155,7 @@ void display(void){
   render.render_cubemap();
   createCans();
 
+  rain.render_rain();
   // Atualizacao
   glutSwapBuffers();
 }

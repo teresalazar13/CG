@@ -12,6 +12,7 @@
 #include "materiais.h"
 #include "RgbImage.h"
 #include "render.h"
+#include "rain.h"
 
 using namespace std;
 
@@ -135,5 +136,7 @@ int NUMBER_OF_CANS = 1;
 
 // Object with methods needed to render
 Render render;
+
+Rain rain;
 
 #endif
