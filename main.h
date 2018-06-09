@@ -128,6 +128,9 @@ GLfloat  incTranslateCanZ[50] = {0.1};
 // number of existing cans
 int NUMBER_OF_CANS = 1;
 
+// 0 -> without lights; 1 -> with lights
+int MODE = 0;
+
 //============================= Iluminacao
 
 // meter varios tipos de focos com angulos diferentes e cores diferentes
