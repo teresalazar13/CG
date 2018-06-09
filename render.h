@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
 #include "RgbImage.h"
 using namespace std;
 
@@ -40,6 +42,7 @@ class Render {
 
     void setup_particles(GLfloat px, GLfloat py, GLfloat pz);
     void setup_lights();
+    void setup_particle_texture();
     void setup_default_textures();
     void setup_cubemap_textures();
     void render_cubemap();

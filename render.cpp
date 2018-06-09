@@ -1,5 +1,21 @@
 #include "render.h"
 
+
+void Render::setup_particle_texture() {
+  glGenTextures(1, texture);
+    imag.LoadBmpFile("textures/particle.bmp");
+    glBindTexture(GL_TEXTURE_2D, particle_texture[0]);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+      imag.GetNumCols(),
+      imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+      imag.ImageData());        
+}
+
 void Render::setup_particles(GLfloat px, GLfloat py, GLfloat pz) {
   GLfloat v, theta, phi;
   GLfloat ps;
@@ -32,6 +48,7 @@ void Render::render_particle() {
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE);
   glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
+
   for (int i = 0; i < NUMBER_OF_PARTICLES; i++) {
     glColor4f(1, 0, 0, particle[i].life);
     glBegin(GL_QUADS);
@@ -48,10 +65,10 @@ void Render::render_particle() {
     particle[i].vy += particle[i].ay;
     particle[i].vz += particle[i].az;
     particle[i].life -= particle[i].fade;
+
     glColor4f(1, 1, 1, 1);
   }
   glDisable(GL_BLEND);
-
 }
 
 void Render::setup_lights() {
@@ -60,44 +77,38 @@ void Render::setup_lights() {
   GLfloat light0_dif[4] = {1.0, 0.0, 0.0, 1.0};
   GLfloat light0_spec[4] = {1.0, 0.0, 0.0, 1.0};
   GLfloat light0_pos[4] = {10.0, 0.0, 0.0, 1.0};
+  GLfloat light0_dir[3] = {-1.0, 0.0, -1.0};
 
   GLfloat light1_amb[4] = {0.0, 1.0, 0.0, 1.0};
   GLfloat light1_dif[4] = {0.0, 1.0, 0.0, 1.0};
   GLfloat light1_spec[4] = {0.0, 1.0, 0.0, 1.0};
   GLfloat light1_pos[4] = {10.0, 0.0, 0.0, 1.0};
-  GLfloat light1_dir[3] = {0.0, 1.0, 0.0};
 
   GLfloat light2_amb[4] = {0.0, 0.0, 1.0, 1.0};
   GLfloat light2_dif[4] = {0.0, 0.0, 1.0, 1.0};
   GLfloat light2_spec[4] = {0.0, 0.0, 1.0, 1.0};
   GLfloat light2_pos[4] = {10.0, 0.0, 0.0, 1.0};
-  GLfloat light2_dir[3] = {0.0, 1.0, 0.0};
 
   glEnable(GL_LIGHT0);
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_pos);
+    glLightfv(GL_LIGHT0, GL_POSITION, light0_pos);
     glLightfv(GL_LIGHT0, GL_AMBIENT, light0_amb);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_dif);
     glLightfv(GL_LIGHT0, GL_SPECULAR, light0_spec);
-    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 120);
-    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 80);
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_dir);
   glDisable(GL_LIGHT0);
 
   glEnable(GL_LIGHT1);
-    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light1_pos);
+    glLightfv(GL_LIGHT1, GL_POSITION, light1_pos);
     glLightfv(GL_LIGHT1, GL_AMBIENT, light1_amb);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_dif);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, light1_spec);
-    glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 120);
-    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, light1_spec);
   glDisable(GL_LIGHT1);
 
   glEnable(GL_LIGHT2);
-    glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, light2_pos);
     glLightfv(GL_LIGHT2, GL_AMBIENT, light2_amb);
     glLightfv(GL_LIGHT2, GL_DIFFUSE, light2_dif);
     glLightfv(GL_LIGHT0, GL_SPECULAR, light2_spec);
-    glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 120);
-    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 180);
   glDisable(GL_LIGHT2);
 }
 
