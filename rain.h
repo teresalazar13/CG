@@ -8,6 +8,8 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
+#include <time.h>
+
 
 typedef struct {
   // Life

@@ -7,7 +7,6 @@
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
 #include <math.h>
-#include <time.h>
 #include <vector>
 #include "materiais.h"
 #include "RgbImage.h"
