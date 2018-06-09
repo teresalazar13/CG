@@ -30,7 +30,7 @@ typedef struct {
 class Render {
   public:
     GLuint  particle_texture[1];
-    GLuint  skyboxtex[6];
+    GLuint  skyboxtex[1];
     GLuint  texture[3];
     RgbImage imag;
     Particle particle[2500];
