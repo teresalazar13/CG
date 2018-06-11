@@ -13,50 +13,55 @@ void Render::setup_particle_texture() {
     glTexImage2D(GL_TEXTURE_2D, 0, 3,
       imag.GetNumCols(),
       imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-      imag.ImageData());        
+      imag.ImageData());
 }
 
 void Render::setup_particles(GLfloat px, GLfloat py, GLfloat pz) {
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE);
   GLfloat v, theta, phi;
   GLfloat ps;
 
-  ps = 1; // tamanho particula
+  ps = 0.05; // tamanho particula
 
   for(int i = 0; i < NUMBER_OF_PARTICLES; i++)  {
-    v = 1 * frand() + 0.1;
+    glColor3f(1, 0, 0);
+    v = 1 * frand() - 2;
     theta = 2.0 * frand() * M_PI;   // [0..2pi]
     phi = frand() * M_PI;		// [0.. pi]
 
     particle[i].size = ps;		// tamanho de cada particula
-    particle[i].x = px + 0.1 * frand() * px;    // [-200 200]
-    particle[i].y = py + 0.1 * frand() * py;	// [-200 200]
-    particle[i].z = pz + 0.1 * frand() * pz;	// [-200 200]
+    particle[i].x = px + 0.4 * frand() * px;    // [-200 200]
+    particle[i].y = py + 0.4 * frand() * py;	// [-200 200]
+    particle[i].z = pz + 0.4 * frand() * pz;	// [-200 200]
 
     particle[i].vx = v * cos(theta) * sin(phi);	// esferico
     particle[i].vy = v * cos(phi);
     particle[i].vz = v * sin(theta) * sin(phi);
-    particle[i].ax = 0.1f;
-    particle[i].ay = -0.1f;
-    particle[i].az = 0.15f;
+    particle[i].ax = 0.01f;
+    particle[i].ay = -0.01f;
+    particle[i].az = 0.015f;
 
     particle[i].life = 1.0f;
     particle[i].fade = 0.001f; // Em 100=1/0.01 iteracoes desaparece
   }
+  glDisable(GL_BLEND);
 }
 
 void Render::render_particle() {
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+
+  //glEnable(GL_BLEND);
+  //glBlendFunc(GL_SRC_ALPHA,GL_ONE);
   glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
 
   for (int i = 0; i < NUMBER_OF_PARTICLES; i++) {
-    glColor4f(1, 0, 0, particle[i].life);
     glBegin(GL_QUADS);
-      glTexCoord2d(0,0); glVertex3f(particle[i].x - particle[i].size, particle[i].y - particle[i].size, particle[i].z);
-      glTexCoord2d(1,0); glVertex3f(particle[i].x + particle[i].size, particle[i].y - particle[i].size, particle[i].z);
-      glTexCoord2d(1,1); glVertex3f(particle[i].x + particle[i].size, particle[i].y + particle[i].size, particle[i].z);
-      glTexCoord2d(0,1); glVertex3f(particle[i].x - particle[i].size, particle[i].y + particle[i].size, particle[i].z);
+      glTexCoord2d(0, 0); glVertex3f(particle[i].x - particle[i].size, particle[i].y - particle[i].size, particle[i].z);
+      glTexCoord2d(1, 0); glVertex3f(particle[i].x + particle[i].size, particle[i].y - particle[i].size, particle[i].z);
+      glTexCoord2d(1, 1); glVertex3f(particle[i].x + particle[i].size, particle[i].y + particle[i].size, particle[i].z);
+      glTexCoord2d(0, 1); glVertex3f(particle[i].x - particle[i].size, particle[i].y + particle[i].size, particle[i].z);
     glEnd();
+    glColor4f(1, 0, 0, 1);
 
     particle[i].x += particle[i].vx;
     particle[i].y += particle[i].vy;
@@ -65,10 +70,9 @@ void Render::render_particle() {
     particle[i].vy += particle[i].ay;
     particle[i].vz += particle[i].az;
     particle[i].life -= particle[i].fade;
-
-    glColor4f(1, 1, 1, 1);
   }
-  glDisable(GL_BLEND);
+
+  //glDisable(GL_BLEND);
 }
 
 void Render::setup_lights() {

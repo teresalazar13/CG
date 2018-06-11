@@ -16,7 +16,7 @@
 #include "RgbImage.h"
 using namespace std;
 
-#define NUMBER_OF_PARTICLES 1000
+#define NUMBER_OF_PARTICLES 100
 #define NUMBER_OF_CAN_TEXTURES 6
 
 // Particles variables

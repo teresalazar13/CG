@@ -26,10 +26,13 @@ void Rain::init_particles() {
 }
 // For Rain
 void Rain::render_rain() {
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE);
   float x, y, z;
-  for (loop = 0; loop < 1000; loop = loop+2) {
-    if (par_sys[loop].alive == true) {
 
+  for (loop = 0; loop < 1000; loop = loop + 2) {
+
+    if (par_sys[loop].alive == true) {
       x = par_sys[loop].xpos;
       y = par_sys[loop].ypos;
       z = par_sys[loop].zpos;
@@ -46,9 +49,8 @@ void Rain::render_rain() {
         }
       }
 
-
       // Update values
-      //Move
+      // Move
       // Adjust slowdown for speed!
       par_sys[loop].ypos += par_sys[loop].vel / (slowdown*1000);
       par_sys[loop].vel += par_sys[loop].gravity;
@@ -64,4 +66,5 @@ void Rain::render_rain() {
       }
     }
   }
+  glDisable(GL_BLEND);
 }
