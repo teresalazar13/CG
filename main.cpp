@@ -26,6 +26,7 @@ void inicializa(void) {
   glEnable(GL_TEXTURE_2D);
   render.setup_default_textures();
   render.setup_cubemap_textures();
+  //render.setup_particle_texture();
   glDisable(GL_TEXTURE_2D);
 
   glEnable(GL_DEPTH_TEST);
