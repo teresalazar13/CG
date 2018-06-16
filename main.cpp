@@ -1,12 +1,14 @@
 #include "main.h"
 
+bool keyStates[256];
+
 using namespace std;
 
 
 // util function that generates a random number from 0 to max
 int generate_random_int_number(int max) {
-  srand (time(NULL));
-  return (rand() % max + 0);
+  srand(time(NULL));
+  return(rand() % max + 0);
 }
 
 
@@ -155,114 +157,109 @@ void display(void){
   glLoadIdentity();
   gluLookAt(rVisao * cos(aVisao), obsP[1], rVisao * sin(aVisao), LOOK_X, LOOK_Y, LOOK_Z, 0, 1, 0);
 
-  // Objectos
-  render.render_cubemap();
-  createCans();
-
-  rain.render_rain();
-  // Atualizacao
-  glutSwapBuffers();
-}
-
-
-void keyboard(unsigned char key, int x, int y){
-  switch (key) {
-    // aproxima do centro ao inicio
-    case 'o':
-      if (rVisao > 1) {
-        rVisao -= 0.1;
-        glutPostRedisplay();
-      }
-      break;
-
-    // afasta do centro ao inicio
-    case 'p':
-      if (rVisao < 20) {
-        rVisao += 0.1;
-        glutPostRedisplay();
-      }
-      break;
-
-    // modificar o ponto para onde o utilizar esta a olha no eixo dos x
-    case 'q':
-      LOOK_X += -0.1;
-      glutPostRedisplay();
-      break;
-
-    // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
-    case 'w':
-      LOOK_X += 0.1;
-      glutPostRedisplay();
-      break;
-
-    // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
-    case 'e':
-      LOOK_Y += -0.1;
-      glutPostRedisplay();
-      break;
-
-    // modificar o ponto para onde o utilizar esta a olha no eixo dos yy
-    case 'r':
-      LOOK_Y += 0.1;
-      glutPostRedisplay();
-      break;
-
-    // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
-    case 't':
-      LOOK_Z += -0.1;
-      glutPostRedisplay();
-      break;
-
-    // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
-    case 'y':
-      LOOK_Z += 0.1;
-      glutPostRedisplay();
-      break;
-
-    case 'z':
-      generateCan();
-      glutPostRedisplay();
-      break;
-
-    case '-':
-      if (MODE == 0) {
-        MODE = 1;
-      }
-      else {
-        glEnable(GL_LIGHT0);
-        glEnable(GL_LIGHT1);
-        glEnable(GL_LIGHT2);
-        MODE = 0;
-      }
-      break;
-
-    case 27:
-      exit(0);
-      break;
-  }
-}
-
-void teclasNotAscii(int key, int x, int y){
-  if(key == GLUT_KEY_UP && obsP[1] < yC/2) {
-    obsP[1] = (obsP[1] + 0.3);
+  if(keyStates[GLUT_KEY_UP] && obsP[1] < yC/2) {
+    obsP[1] = (obsP[1] + 0.01);
   }
 
-  if(key == GLUT_KEY_DOWN && obsP[1] > -yC/2) {
-    obsP[1] = (obsP[1] - 0.3);
+  if(keyStates[GLUT_KEY_DOWN] && obsP[1] > -yC/2) {
+    obsP[1] = (obsP[1] - 0.01);
   }
 
-  if(key == GLUT_KEY_LEFT) {
-    aVisao = (aVisao + 0.02);
+  if(keyStates[GLUT_KEY_LEFT]) {
+    aVisao = (aVisao + 0.01);
   }
-  if(key == GLUT_KEY_RIGHT) {
-    aVisao = (aVisao - 0.02);
+  if(keyStates[GLUT_KEY_RIGHT]) {
+    aVisao = (aVisao - 0.01);
   }
 
   obsP[0] = rVisao * cos(aVisao);
   obsP[2] = rVisao * sin(aVisao);
 
-  glutPostRedisplay();
+  if (keyStates['o'] && rVisao > 1) {
+    rVisao -= 0.2;
+  }
+
+  // afasta do centro ao inicio
+  if (keyStates['p'] && rVisao < 20) {
+    rVisao += 0.02;
+  }
+
+  // modificar o ponto para onde o utilizar esta a olha no eixo dos x
+  if (keyStates['q'] && rVisao < 20) {
+    LOOK_X += -0.02;
+  }
+
+  // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
+  if (keyStates['w']) {
+    LOOK_X += 0.02;
+  }
+
+  // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
+  if (keyStates['e']) {
+    LOOK_Y += -0.02;
+  }
+
+  // modificar o ponto para onde o utilizar esta a olha no eixo dos yy
+  if (keyStates['r']) {
+    LOOK_Y += 0.02;
+  }
+
+  // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
+  if (keyStates['t']) {
+    LOOK_Z += -0.02;
+  }
+
+  // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
+  if (keyStates['y']) {
+    LOOK_Z += 0.02;
+  }
+
+  // Objectos
+  render.render_cubemap();
+  createCans();
+
+  //rain.render_rain();
+  // Atualizacao
+  glutSwapBuffers();
 }
+
+
+void keyboard (unsigned char key, int x, int y) {
+  if (key == 'z') {
+    generateCan();
+  }
+
+  else if (key == '-') {
+    if (MODE == 0) {
+      MODE = 1;
+    }
+    else {
+      glEnable(GL_LIGHT0);
+      glEnable(GL_LIGHT1);
+      glEnable(GL_LIGHT2);
+      MODE = 0;
+    }
+  }
+
+  else {
+    keyStates[key] = true;
+  }
+}
+
+
+void keyboardUp (unsigned char key, int x, int y) {
+  keyStates[key] = false;
+}
+
+
+void teclasNotAscii(int key, int x, int y){
+  keyStates[key] = true;
+}
+
+void teclasNotAsciiUp(int key, int x, int y){
+  keyStates[key] = false;
+}
+
 
 void Timer(int value){
   glutPostRedisplay();
@@ -281,8 +278,10 @@ int main(int argc, char** argv){
   inicializa();
 
   glutSpecialFunc(teclasNotAscii);
-  glutDisplayFunc(display);
+  glutSpecialUpFunc(teclasNotAsciiUp);
   glutKeyboardFunc(keyboard);
+  glutKeyboardUpFunc(keyboardUp);
+  glutDisplayFunc(display);
   glutTimerFunc(msec, Timer, 1);
 
   glutMainLoop();
