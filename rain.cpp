@@ -11,7 +11,6 @@ void Rain::setup_particle(int i) {
   par_sys[i].fade = (rand() % 100) / 1000.0f + 0.003f;
   par_sys[i].xpos = -20.0;
   par_sys[i].zpos = -20.0;
-
   par_sys[i].ypos = 20.0;
 
   par_sys[i].vel = velocity;
