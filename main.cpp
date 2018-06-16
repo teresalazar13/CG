@@ -5,13 +5,6 @@ bool keyStates[256];
 using namespace std;
 
 
-// util function that generates a random number from 0 to max
-int generate_random_int_number(int min, int max) {
-  srand(time(NULL));
-  return(rand() % (max - min) + min);
-}
-
-
 void inicializa(void) {
   // Interpolacao de cores
   glShadeModel(GL_SMOOTH);
@@ -40,28 +33,28 @@ void inicializa(void) {
 
 void generateCan() {
   if (NUMBER_OF_CANS < 50) {
-    int angRotateX_ = generate_random_int_number(0, 360);
-    int angRotateY_ = generate_random_int_number(0, 360);
-    int angRotateZ_ = generate_random_int_number(0, 360);
+    int angRotateX_ = rand() % 360;
+    int angRotateY_ = rand() % 360;
+    int angRotateZ_ = rand() % 360;
 
-    angRotateX[NUMBER_OF_CANS] = angRotateX_;
-    angRotateY[NUMBER_OF_CANS] = angRotateY_;
-    angRotateZ[NUMBER_OF_CANS] = angRotateZ_;
+    cans[NUMBER_OF_CANS].angRotateX = angRotateX_;
+    cans[NUMBER_OF_CANS].angRotateY = angRotateY_;
+    cans[NUMBER_OF_CANS].angRotateZ = angRotateZ_;
 
-    int translateCanX_ = generate_random_int_number(-20, 20);
-    int translateCanY_ = generate_random_int_number(-20, 20);
-    int translateCanZ_ = generate_random_int_number(-20, 20);
+    int translateCanX_ = rand() % 40 - 20;
+    int translateCanY_ = rand() % 40 - 20;
+    int translateCanZ_ = rand() % 40 - 20;
 
-    translateCanX[NUMBER_OF_CANS] = translateCanX_;
-    incTranslateCanX[NUMBER_OF_CANS] = 0.1;
+    cans[NUMBER_OF_CANS].translateCanX = translateCanX_;
+    cans[NUMBER_OF_CANS].incTranslateCanX = 0.1;
 
-    translateCanY[NUMBER_OF_CANS] = translateCanY_;
-    incTranslateCanY[NUMBER_OF_CANS] = 0.1;
+    cans[NUMBER_OF_CANS].translateCanY = translateCanY_;
+    cans[NUMBER_OF_CANS].incTranslateCanY = 0.1;
 
-    translateCanZ[NUMBER_OF_CANS] = translateCanZ_;
-    incTranslateCanZ[NUMBER_OF_CANS] = 0.1;
+    cans[NUMBER_OF_CANS].translateCanZ = translateCanZ_;
+    cans[NUMBER_OF_CANS].incTranslateCanZ = 0.1;
 
-    int rand_texture = generate_random_int_number(0, NUMBER_OF_CAN_TEXTURES);
+    int rand_texture = rand() % NUMBER_OF_CAN_TEXTURES;
 
     cans[NUMBER_OF_CANS].texture = rand_texture;
     NUMBER_OF_CANS++;
@@ -72,37 +65,37 @@ void generateCan() {
 void createCans() {
   for (int i = 0; i < NUMBER_OF_CANS; i++) {
     // increment rotation angle
-    angRotateX[i] = angRotateX[i] + incAngRotate;
-    angRotateY[i] = angRotateY[i] + incAngRotate;
-    angRotateZ[i] = angRotateZ[i] + incAngRotate;
+    cans[i].angRotateX = cans[i].angRotateX + incAngRotate;
+    cans[i].angRotateY = cans[i].angRotateY + incAngRotate;
+    cans[i].angRotateZ = cans[i].angRotateZ + incAngRotate;
 
     // translate can accordingly
-    if (translateCanY[i] > yC || translateCanY[i] < -yC) {
+    if (cans[i].translateCanY > yC || cans[i].translateCanY < -yC) {
       if (MODE == 1) {
         glDisable(GL_LIGHT0);
         glEnable(GL_LIGHT1);
       }
-      incTranslateCanY[i] = incTranslateCanY[i] * -1;
+      cans[i].incTranslateCanY = cans[i].incTranslateCanY * -1;
     }
-    translateCanY[i] = translateCanY[i] + incTranslateCanY[i];
+    cans[i].translateCanY = cans[i].translateCanY + cans[i].incTranslateCanY;
 
-    if (translateCanX[i] > xC/2 || translateCanX[i] < -xC/2) {
+    if (cans[i].translateCanX > xC || cans[i].translateCanX < -xC) {
       if (MODE == 1) {
         glDisable(GL_LIGHT1);
         glEnable(GL_LIGHT2);
       }
-      incTranslateCanX[i] = incTranslateCanX[i] * -1;
+      cans[i].incTranslateCanX = cans[i].incTranslateCanX * -1;
     }
-    translateCanX[i] = translateCanX[i] + incTranslateCanX[i];
+    cans[i].translateCanX = cans[i].translateCanX + cans[i].incTranslateCanX;
 
-    if (translateCanZ[i] > zC/2 || translateCanZ[i] < -zC/2) {
+    if (cans[i].translateCanZ > zC || cans[i].translateCanZ < -zC) {
       if (MODE == 1) {
         glDisable(GL_LIGHT2);
         glEnable(GL_LIGHT0);
       }
-      incTranslateCanZ[i] = incTranslateCanZ[i] * -1;
+      cans[i].incTranslateCanZ = cans[i].incTranslateCanZ * -1;
     }
-    translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
+    cans[i].translateCanZ = cans[i].translateCanZ + cans[i].incTranslateCanZ;
 
     // bind texture to can
     glEnable(GL_TEXTURE_2D);
@@ -111,10 +104,10 @@ void createCans() {
 
     // create cylinder
     glPushMatrix();
-      glTranslated(translateCanX[i], translateCanY[i], translateCanZ[i]);
-      glRotatef (angRotateX[i], 1, 0, 0);
-      glRotatef (angRotateY[i], 0, 1, 0);
-      glRotatef (angRotateZ[i], 0, 0, 1);
+      glTranslated(cans[i].translateCanX, cans[i].translateCanY, cans[i].translateCanZ);
+      glRotatef(cans[i].angRotateX, 1, 0, 0);
+      glRotatef(cans[i].angRotateY, 0, 1, 0);
+      glRotatef(cans[i].angRotateZ, 0, 0, 1);
 
       gluQuadricDrawStyle (yy, GLU_FILL);
       gluQuadricNormals   (yy, GLU_SMOOTH);
@@ -221,7 +214,7 @@ void display(void){
 }
 
 
-void keyboard (unsigned char key, int x, int y) {
+void keyboard(unsigned char key, int x, int y) {
   if (key == 'z') {
     generateCan();
   }
@@ -253,7 +246,7 @@ void keyboard (unsigned char key, int x, int y) {
 }
 
 
-void keyboardUp (unsigned char key, int x, int y) {
+void keyboardUp(unsigned char key, int x, int y) {
   keyStates[key] = false;
 }
 
@@ -282,6 +275,7 @@ int main(int argc, char** argv){
   glutCreateWindow ("");
 
   inicializa();
+  generateCan();
 
   glutSpecialFunc(teclasNotAscii);
   glutSpecialUpFunc(teclasNotAsciiUp);

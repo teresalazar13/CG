@@ -17,58 +17,33 @@ using namespace std;
 
 // colors
 #define BLUE      0.0, 0.0, 1.0, 1.0
-#define RED	  1.0, 0.0, 0.0, 1.0
+#define RED	      1.0, 0.0, 0.0, 1.0
 #define YELLOW	  1.0, 1.0, 0.0, 1.0
 #define GREEN     0.0, 1.0, 0.0, 1.0
 #define WHITE     1.0, 1.0, 1.0, 1.0
 #define BLACK     0.0, 0.0, 0.0, 1.0
-#define PI	  3.14159
+#define PI	      3.14159
 
 
-// saves info needed to render can
+//------------------------------------------------------------ CANS
+int NUMBER_OF_CANS = 0;  // number of existing cans
+
 struct Can {
   int texture;
+  GLfloat angRotateX;
+  GLfloat angRotateY;
+  GLfloat angRotateZ;
+  GLfloat translateCanX;
+  GLfloat translateCanY;
+  GLfloat translateCanZ;
+  GLfloat incTranslateCanX;
+  GLfloat incTranslateCanY;
+  GLfloat incTranslateCanZ;
 };
 
-// number of cans possible
 Can cans[50];
 
-GLfloat tam = 2.0;
-static GLfloat vertices[]={
-  // x = tam (Esquerda)
-  -tam,  -tam,  tam,	// 0
-  -tam,   tam,  tam,	// 1
-  -tam,   tam, -tam,	// 2
-  -tam,  -tam, -tam,	// 3
-  // Direita
-  tam,  -tam,  tam,	// 4
-  tam,   tam,  tam,	// 5
-  tam,   tam, -tam,	// 6
-  tam,  -tam, -tam,	// 7
-  // Cima
-  -tam,  tam,  tam,	// 8
-  -tam,  tam, -tam,	// 9
-  tam,  tam, -tam,	// 10
-  tam,  tam,  tam,	// 11
-};
-
-static GLfloat normais[] = {
-  // x=tam (Esquerda)
-  -1.0,  0.0,  0.0,
-  -1.0,  0.0,  0.0,
-  -1.0,  0.0,  0.0,
-  -1.0,  0.0,  0.0,
-  // x=tam (Direita)
-  1.0,  0.0,  0.0,
-  1.0,  0.0,  0.0,
-  1.0,  0.0,  0.0,
-  1.0,  0.0,  0.0,
-  //  y=tam (Cima)
-  0.0,  1.0,  0.0,
-  0.0,  1.0,  0.0,
-  0.0,  1.0,  0.0,
-  0.0,  1.0,  0.0,
-};
+GLfloat incAngRotate = 1;
 
 //------------------------------------------------------------ Cores
 static GLfloat cor[]={
@@ -90,11 +65,14 @@ static GLfloat cor[]={
 };
 
 //------------------------------------------------------------ Sistema Coordenadas + objectos
+// Janela (pixeis)
 GLint wScreen = 1600;
-GLint hScreen = 1200;		// janela (pixeis)
+GLint hScreen = 1200;
+
+// Mundo
 GLfloat xC = 20.0;
 GLfloat yC = 20.0;
-GLfloat zC=20.0;		// Mundo
+GLfloat zC = 20.0;
 
 //------------------------------------------------------------ Observador
 GLfloat rVisao = 18;
@@ -110,31 +88,8 @@ GLfloat LOOK_Z = 0;
 
 GLint    msec = 1;					// definicao do timer (atualizacao)
 
-GLfloat  angRotateX[50] = {0};
-GLfloat  angRotateY[50] = {0};
-GLfloat  angRotateZ[50] = {0};
-
-GLfloat  incAngRotate = 1;
-
-GLfloat  translateCanX[50] = {0};
-GLfloat  incTranslateCanX[50] = {0.1};
-
-GLfloat  translateCanY[50] = {0};
-GLfloat  incTranslateCanY[50] = {0.1};
-
-GLfloat  translateCanZ[50] = {0};
-GLfloat  incTranslateCanZ[50] = {0.1};
-
-// number of existing cans
-int NUMBER_OF_CANS = 1;
-
 // 0 -> without lights; 1 -> with lights
 int MODE = 0;
-
-//============================= Iluminacao
-
-// meter varios tipos de focos com angulos diferentes e cores diferentes
-// 1;0;0 para amb dif e especular faz um foco vermelhokk
 
 // Object with methods needed to render
 Render render;
