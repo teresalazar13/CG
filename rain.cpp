@@ -4,7 +4,6 @@ float slowdown = 1;
 float velocity = 0.6;
 int loop;
 
-// Initialize / Reset Particles
 void Rain::setup_particle(int i) {
   par_sys[i].alive = true;
   par_sys[i].life = 1.0;
@@ -34,9 +33,9 @@ void Rain::render_rain() {
       x = par_sys[loop].xpos;
       y = par_sys[loop].ypos;
       z = par_sys[loop].zpos;
+
       for (int i = x; i < 20; i += 2) {
         for (int j = z; j < 20; j+= 3) {
-          // Draw particles
           glColor4f(0, 0, 1, par_sys[loop].life);
           glBegin(GL_LINES);
             glVertex3f(i, y, j);
@@ -47,17 +46,14 @@ void Rain::render_rain() {
         }
       }
 
-      // Update values, move, adjust slowdown for speed
       par_sys[loop].ypos += par_sys[loop].vel / (slowdown*1000);
       par_sys[loop].vel += par_sys[loop].gravity;
-      // Decay
       par_sys[loop].life -= par_sys[loop].fade;
 
       if (par_sys[loop].ypos <= -20) {
         par_sys[loop].life = -1.0;
       }
 
-      // Revive
       if (par_sys[loop].life < -1.0) {
         setup_particle(loop);
       }

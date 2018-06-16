@@ -20,13 +20,10 @@ typedef struct {
   bool alive;
   float life;
   float fade;
-  // Position/direction
   float xpos;
   float ypos;
   float zpos;
-  // Velocity/Direction, only goes down in y dir
   float vel;
-  // Gravity
   float gravity;
 } particles;
 
