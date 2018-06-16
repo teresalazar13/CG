@@ -44,7 +44,7 @@ Can cans[50];
 GLfloat incAngRotate = 1;
 
 // Janela (pixeis)
-GLint wScreen = 1600;
+GLint wScreen = 1800;
 GLint hScreen = 1200;
 
 // Mundo

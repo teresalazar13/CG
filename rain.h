@@ -20,9 +20,7 @@ typedef struct {
   bool alive;
   float life;
   float fade;
-  float xpos;
   float ypos;
-  float zpos;
   float vel;
   float gravity;
 } particles;
