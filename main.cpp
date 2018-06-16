@@ -41,9 +41,9 @@ void generateCan() {
     cans[NUMBER_OF_CANS].angRotateY = angRotateY_;
     cans[NUMBER_OF_CANS].angRotateZ = angRotateZ_;
 
-    int translateCanX_ = rand() % 36 - xC;
-    int translateCanY_ = rand() % 36 - yC;
-    int translateCanZ_ = rand() % 36 - zC;
+    int translateCanX_ = rand() % 36 - (xC - 2);
+    int translateCanY_ = rand() % 36 - (yC - 2);
+    int translateCanZ_ = rand() % 36 - (zC - 2);
 
     cans[NUMBER_OF_CANS].translateCanX = translateCanX_;
     cans[NUMBER_OF_CANS].incTranslateCanX = 0.1;
@@ -273,8 +273,7 @@ int main(int argc, char** argv){
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
   glutInitWindowSize (wScreen, hScreen);
   glutInitWindowPosition (300, 100);
-  // TODO -> in create window write commands
-  glutCreateWindow ("");
+  glutCreateWindow ("CG PROJECT");
 
   inicializa();
   generateCan();

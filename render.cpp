@@ -24,8 +24,6 @@ void Render::setup_lights() {
     glLightfv(GL_LIGHT0, GL_AMBIENT, light0_amb);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_dif);
     glLightfv(GL_LIGHT0, GL_SPECULAR, light0_spec);
-    //glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 80);
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_dir);
   glDisable(GL_LIGHT0);
 
   glEnable(GL_LIGHT1);
