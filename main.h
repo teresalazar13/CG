@@ -90,7 +90,10 @@ GLfloat LOOK_Z = 0;
 GLint    msec = 1;					// definicao do timer (atualizacao)
 
 // 0 -> without lights; 1 -> with lights
-int MODE = 0;
+int LIGHT_MODE = 0;
+// 0 -> without rain; 1 -> with rain
+int RAIN_MODE = 1;
+
 
 // Object with methods needed to render
 Render render;

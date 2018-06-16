@@ -7,7 +7,6 @@ void Render::setup_lights() {
   GLfloat light0_dif[4] = {0.7, 0.0, 0.0, 1.0};
   GLfloat light0_spec[4] = {0.7, 0.0, 0.0, 1.0};
   GLfloat light0_pos[4] = {10.0, 0.0, 0.0, 1.0};
-  GLfloat light0_dir[3] = {-1.0, 0.0, -1.0};
 
   GLfloat light1_amb[4] = {0.0, 0.7, 0.0, 1.0};
   GLfloat light1_dif[4] = {0.0, 0.7, 0.0, 1.0};

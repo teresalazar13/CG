@@ -13,17 +13,17 @@ void inicializa(void) {
 
   glEnable(GL_DEPTH_TEST);
 
-  render.setup_lights();
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
-  glEnable(GL_LIGHT1);
-  glEnable(GL_LIGHT2);
-
   // Ativar modo textura
   glEnable(GL_TEXTURE_2D);
   render.setup_default_textures();
   render.setup_cubemap_textures();
   glDisable(GL_TEXTURE_2D);
+
+  render.setup_lights();
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+  glEnable(GL_LIGHT1);
+  glEnable(GL_LIGHT2);
 
   glEnable(GL_DEPTH_TEST);
   rain.NUMBER_OF_RAIN_PARTICLES = 1000;
@@ -72,7 +72,7 @@ void createCans() {
 
     // translate can accordingly
     if (cans[i].translateCanY > yC - 1.75 || cans[i].translateCanY < -yC + 1.75) {
-      if (MODE == 1) {
+      if (LIGHT_MODE == 1) {
         glDisable(GL_LIGHT0);
         glEnable(GL_LIGHT1);
       }
@@ -81,7 +81,7 @@ void createCans() {
     cans[i].translateCanY = cans[i].translateCanY + cans[i].incTranslateCanY;
 
     if (cans[i].translateCanX > xC - 1.75 || cans[i].translateCanX < -xC + 1.75) {
-      if (MODE == 1) {
+      if (LIGHT_MODE == 1) {
         glDisable(GL_LIGHT1);
         glEnable(GL_LIGHT2);
       }
@@ -90,7 +90,7 @@ void createCans() {
     cans[i].translateCanX = cans[i].translateCanX + cans[i].incTranslateCanX;
 
     if (cans[i].translateCanZ > zC - 1.75 || cans[i].translateCanZ < -zC + 1.75) {
-      if (MODE == 1) {
+      if (LIGHT_MODE == 1) {
         glDisable(GL_LIGHT2);
         glEnable(GL_LIGHT0);
       }
@@ -221,23 +221,47 @@ void keyboard(unsigned char key, int x, int y) {
   }
 
   if (key == '.') {
-    if (rain.NUMBER_OF_RAIN_PARTICLES == 1000) {
+
+    if (RAIN_MODE == 1) {
       rain.NUMBER_OF_RAIN_PARTICLES = 0;
+      if (LIGHT_MODE == 0) {
+        glDisable(GL_LIGHTING);
+      }
+      RAIN_MODE = 0;
     }
+
     else {
+      if (LIGHT_MODE == 0) {
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+        glEnable(GL_LIGHT1);
+        glEnable(GL_LIGHT2);
+      }
       rain.NUMBER_OF_RAIN_PARTICLES = 1000;
+      RAIN_MODE = 1;
     }
   }
 
   else if (key == '-') {
-    if (MODE == 0) {
-      MODE = 1;
-    }
-    else {
+    if (LIGHT_MODE == 0) {
+      glEnable(GL_LIGHTING);
       glEnable(GL_LIGHT0);
-      glEnable(GL_LIGHT1);
-      glEnable(GL_LIGHT2);
-      MODE = 0;
+      glDisable(GL_LIGHT1);
+      glDisable(GL_LIGHT2);
+      LIGHT_MODE = 1;
+    }
+
+    else {
+      if (RAIN_MODE == 0) {
+        glDisable(GL_LIGHTING);
+      }
+
+      else {
+        glEnable(GL_LIGHT0);
+        glEnable(GL_LIGHT1);
+        glEnable(GL_LIGHT2);
+      }
+      LIGHT_MODE = 0;
     }
   }
 
