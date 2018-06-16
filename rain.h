@@ -15,7 +15,6 @@
 using namespace std;
 
 #define NUMBER_OF_RAIN_PARTICLES 1000
-#define NUMBER_OF_RAIN 300
 
 typedef struct {
   // Life

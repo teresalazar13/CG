@@ -2,11 +2,13 @@
 
 using namespace std;
 
+
 // util function that generates a random number from 0 to max
 int generate_random_int_number(int max) {
   srand (time(NULL));
   return (rand() % max + 0);
 }
+
 
 void inicializa(void) {
   // Interpolacao de cores
@@ -26,13 +28,12 @@ void inicializa(void) {
   glEnable(GL_TEXTURE_2D);
   render.setup_default_textures();
   render.setup_cubemap_textures();
-  //render.setup_particle_texture();
   glDisable(GL_TEXTURE_2D);
 
   glEnable(GL_DEPTH_TEST);
-  rain.define_rain_properties();
   rain.init_particles();
 }
+
 
 void generateCan() {
   srand (time(NULL));
@@ -68,7 +69,7 @@ void generateCan() {
   }
 }
 
-//==================================== Lata
+
 void createCans() {
   for (int i = 0; i < NUMBER_OF_CANS; i++) {
     // increment rotation angle
@@ -83,8 +84,6 @@ void createCans() {
         glEnable(GL_LIGHT1);
       }
       incTranslateCanY[i] = incTranslateCanY[i] * -1;
-      render.setup_particles(translateCanX[i], translateCanY[i], translateCanZ[i]);
-      render.render_particle();
     }
     translateCanY[i] = translateCanY[i] + incTranslateCanY[i];
 
@@ -94,8 +93,6 @@ void createCans() {
         glEnable(GL_LIGHT2);
       }
       incTranslateCanX[i] = incTranslateCanX[i] * -1;
-      render.setup_particles(translateCanX[i], translateCanY[i], translateCanZ[i]);
-      render.render_particle();
     }
     translateCanX[i] = translateCanX[i] + incTranslateCanX[i];
 
@@ -105,8 +102,6 @@ void createCans() {
         glEnable(GL_LIGHT0);
       }
       incTranslateCanZ[i] = incTranslateCanZ[i] * -1;
-      render.setup_particles(translateCanX[i], translateCanY[i], translateCanZ[i]);
-      render.render_particle();
     }
     translateCanZ[i] = translateCanZ[i] + incTranslateCanZ[i];
 
@@ -147,6 +142,7 @@ void createCans() {
   }
 }
 
+
 void display(void){
   // Apaga ecra/profundidade
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -167,6 +163,7 @@ void display(void){
   // Atualizacao
   glutSwapBuffers();
 }
+
 
 void keyboard(unsigned char key, int x, int y){
   switch (key) {

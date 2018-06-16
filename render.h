@@ -1,6 +1,6 @@
 #ifndef RENDER_HEADER
 #define RENDER_HEADER
-#define frand()			((float)rand()/RAND_MAX)
+#define frand()	((float)rand()/RAND_MAX)
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
@@ -16,33 +16,16 @@
 #include "RgbImage.h"
 using namespace std;
 
-#define NUMBER_OF_PARTICLES 100
 #define NUMBER_OF_CAN_TEXTURES 6
-
-// Particles variables
-typedef struct {
-  float size;
-  float	life;		// vida
-  float	fade;		// fade
-  float	r, g, b;    // color
-  GLfloat x, y, z;    // posicao
-  GLfloat vx, vy, vz; // velocidade
-  GLfloat ax, ay, az; // aceleracao
-} Particle;
-
 
 // Class responsible for the renderization funcctions
 class Render {
   public:
-    GLuint particle_texture[1];
     GLuint wall;
     GLuint texture[NUMBER_OF_CAN_TEXTURES + 2];
     RgbImage imag;
-    Particle particle[2500];
 
-    void setup_particles(GLfloat px, GLfloat py, GLfloat pz);
     void setup_lights();
-    void setup_particle_texture();
     void setup_default_textures();
     void setup_cubemap_textures();
     void render_cubemap();
