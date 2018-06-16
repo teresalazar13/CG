@@ -126,10 +126,9 @@ void createCans() {
       // void gluCylinder(GLUquadric* quad, GLdouble base, GLdouble top, GLdouble height, GLint slices, GLint stacks);
       gluCylinder(yy, 0.4, 0.4, 1.75, 100, 100);
 
-      glBindTexture(GL_TEXTURE_2D, render.texture[NUMBER_OF_CAN_TEXTURES]);
-
       // top of cylinder
       glPushMatrix();
+        glBindTexture(GL_TEXTURE_2D, render.texture[NUMBER_OF_CAN_TEXTURES]);
         glTranslated(0.0f, 0.0f, 1.75);
         // (quad, inner, outer, slices, loops)
         gluDisk(yy, 0.0f, 0.4, 100, 100);
@@ -137,6 +136,7 @@ void createCans() {
 
       // bottom of cylinder
       glPushMatrix();
+        glBindTexture(GL_TEXTURE_2D, render.texture[NUMBER_OF_CAN_TEXTURES + 1]);
         // (quad, inner, outer, slices, loops)
         gluDisk(yy, 0.0f, 0.4, 100, 100);
       glPopMatrix();
