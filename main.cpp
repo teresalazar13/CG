@@ -205,6 +205,10 @@ void display(void){
     LOOK_Z += 0.02;
   }
 
+  if (keyStates[27]) {
+    exit(0);
+  }
+
   // Objectos
   render.render_cubemap();
   createCans();
