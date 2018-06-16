@@ -30,6 +30,7 @@ void inicializa(void) {
   glDisable(GL_TEXTURE_2D);
 
   glEnable(GL_DEPTH_TEST);
+  rain.define_rain_properties();
   rain.init_particles();
 }
 
@@ -172,7 +173,7 @@ void keyboard(unsigned char key, int x, int y){
     // aproxima do centro ao inicio
     case 'o':
       if (rVisao > 1) {
-        rVisao -= 1;
+        rVisao -= 0.1;
         glutPostRedisplay();
       }
       break;
@@ -180,44 +181,44 @@ void keyboard(unsigned char key, int x, int y){
     // afasta do centro ao inicio
     case 'p':
       if (rVisao < 20) {
-        rVisao += 1;
+        rVisao += 0.1;
         glutPostRedisplay();
       }
       break;
 
     // modificar o ponto para onde o utilizar esta a olha no eixo dos x
     case 'q':
-      LOOK_X += -1;
+      LOOK_X += -0.1;
       glutPostRedisplay();
       break;
 
     // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
     case 'w':
-      LOOK_X += 1;
+      LOOK_X += 0.1;
       glutPostRedisplay();
       break;
 
     // modificar o ponto para onde o utilizar esta a olha no eixo dos xs
     case 'e':
-      LOOK_Y += -1;
+      LOOK_Y += -0.1;
       glutPostRedisplay();
       break;
 
     // modificar o ponto para onde o utilizar esta a olha no eixo dos yy
     case 'r':
-      LOOK_Y += 1;
+      LOOK_Y += 0.1;
       glutPostRedisplay();
       break;
 
     // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
     case 't':
-      LOOK_Z += -1;
+      LOOK_Z += -0.1;
       glutPostRedisplay();
       break;
 
     // modificar o ponto para onde o utilizar esta a olha no eixo dos zz
     case 'y':
-      LOOK_Z += 1;
+      LOOK_Z += 0.1;
       glutPostRedisplay();
       break;
 
@@ -246,18 +247,18 @@ void keyboard(unsigned char key, int x, int y){
 
 void teclasNotAscii(int key, int x, int y){
   if(key == GLUT_KEY_UP && obsP[1] < yC/2) {
-    obsP[1] = (obsP[1] + 1);
+    obsP[1] = (obsP[1] + 0.3);
   }
 
   if(key == GLUT_KEY_DOWN && obsP[1] > -yC/2) {
-    obsP[1] = (obsP[1] - 1);
+    obsP[1] = (obsP[1] - 0.3);
   }
 
   if(key == GLUT_KEY_LEFT) {
-    aVisao = (aVisao + 0.1);
+    aVisao = (aVisao + 0.02);
   }
   if(key == GLUT_KEY_RIGHT) {
-    aVisao = (aVisao - 0.1);
+    aVisao = (aVisao - 0.02);
   }
 
   obsP[0] = rVisao * cos(aVisao);

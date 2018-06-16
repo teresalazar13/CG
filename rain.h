@@ -5,11 +5,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <vector>
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
 #include <time.h>
+#include <vector>
 
+using namespace std;
+
+#define NUMBER_OF_RAIN_PARTICLES 1000
+#define NUMBER_OF_RAIN 300
 
 typedef struct {
   // Life
@@ -36,6 +42,7 @@ class Rain {
     void setup_particle(int i);
     void init_particles();
     void render_rain();
+    void define_rain_properties();
 };
 
 #endif
