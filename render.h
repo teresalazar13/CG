@@ -17,7 +17,7 @@ using namespace std;
 
 #define NUMBER_OF_CAN_TEXTURES 6
 
-// Class responsible for the renderization funcctions
+// Class responsible for the renderization functions
 class Render {
   public:
     GLuint wall;

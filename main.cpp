@@ -6,14 +6,10 @@ using namespace std;
 
 
 void inicializa(void) {
-  // Interpolacao de cores
   glShadeModel(GL_SMOOTH);
-  // Apagar
   glClearColor(BLACK);
-
   glEnable(GL_DEPTH_TEST);
 
-  // Ativar modo textura
   glEnable(GL_TEXTURE_2D);
   render.setup_default_textures();
   render.setup_cubemap_textures();
@@ -137,9 +133,7 @@ void createCans() {
 
 
 void display(void){
-  // Apaga ecra/profundidade
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
   glViewport (0, 0, wScreen, hScreen);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -166,11 +160,12 @@ void display(void){
   obsP[0] = rVisao * cos(aVisao);
   obsP[2] = rVisao * sin(aVisao);
 
+  // aproxima ao centro
   if (keyStates['o'] && rVisao > 1) {
     rVisao -= 0.2;
   }
 
-  // afasta do centro ao inicio
+  // afasta do centro
   if (keyStates['p'] && rVisao < xC) {
     rVisao += 0.02;
   }
