@@ -5,13 +5,6 @@ bool keyStates[256];
 using namespace std;
 
 
-// util function that generates a random number from 0 to max
-int generate_random_int_number(int min, int max) {
-  srand(time(NULL));
-  return(rand() % (max - min) + min);
-}
-
-
 void inicializa(void) {
   // Interpolacao de cores
   glShadeModel(GL_SMOOTH);
@@ -40,17 +33,17 @@ void inicializa(void) {
 
 void generateCan() {
   if (NUMBER_OF_CANS < 50) {
-    int angRotateX_ = generate_random_int_number(0, 360);
-    int angRotateY_ = generate_random_int_number(0, 360);
-    int angRotateZ_ = generate_random_int_number(0, 360);
+    int angRotateX_ = rand() % 360;
+    int angRotateY_ = rand() % 360;
+    int angRotateZ_ = rand() % 360;
 
     cans[NUMBER_OF_CANS].angRotateX = angRotateX_;
     cans[NUMBER_OF_CANS].angRotateY = angRotateY_;
     cans[NUMBER_OF_CANS].angRotateZ = angRotateZ_;
 
-    int translateCanX_ = generate_random_int_number(-20, 20);
-    int translateCanY_ = generate_random_int_number(-20, 20);
-    int translateCanZ_ = generate_random_int_number(-20, 20);
+    int translateCanX_ = rand() % 40 - 20;
+    int translateCanY_ = rand() % 40 - 20;
+    int translateCanZ_ = rand() % 40 - 20;
 
     cans[NUMBER_OF_CANS].translateCanX = translateCanX_;
     cans[NUMBER_OF_CANS].incTranslateCanX = 0.1;
@@ -61,7 +54,7 @@ void generateCan() {
     cans[NUMBER_OF_CANS].translateCanZ = translateCanZ_;
     cans[NUMBER_OF_CANS].incTranslateCanZ = 0.1;
 
-    int rand_texture = generate_random_int_number(0, NUMBER_OF_CAN_TEXTURES);
+    int rand_texture = rand() % NUMBER_OF_CAN_TEXTURES;
 
     cans[NUMBER_OF_CANS].texture = rand_texture;
     NUMBER_OF_CANS++;
@@ -86,7 +79,7 @@ void createCans() {
     }
     cans[i].translateCanY = cans[i].translateCanY + cans[i].incTranslateCanY;
 
-    if (cans[i].translateCanX > xC/2 || cans[i].translateCanX < -xC/2) {
+    if (cans[i].translateCanX > xC || cans[i].translateCanX < -xC) {
       if (MODE == 1) {
         glDisable(GL_LIGHT1);
         glEnable(GL_LIGHT2);
@@ -95,7 +88,7 @@ void createCans() {
     }
     cans[i].translateCanX = cans[i].translateCanX + cans[i].incTranslateCanX;
 
-    if (cans[i].translateCanZ > zC/2 || cans[i].translateCanZ < -zC/2) {
+    if (cans[i].translateCanZ > zC || cans[i].translateCanZ < -zC) {
       if (MODE == 1) {
         glDisable(GL_LIGHT2);
         glEnable(GL_LIGHT0);
