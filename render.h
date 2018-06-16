@@ -1,6 +1,5 @@
 #ifndef RENDER_HEADER
 #define RENDER_HEADER
-#define frand()	((float)rand()/RAND_MAX)
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>

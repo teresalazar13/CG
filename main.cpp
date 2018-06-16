@@ -6,9 +6,9 @@ using namespace std;
 
 
 // util function that generates a random number from 0 to max
-int generate_random_int_number(int max) {
+int generate_random_int_number(int min, int max) {
   srand(time(NULL));
-  return(rand() % max + 0);
+  return(rand() % (max - min) + min);
 }
 
 
@@ -39,22 +39,18 @@ void inicializa(void) {
 
 
 void generateCan() {
-  srand (time(NULL));
-  int rand_texture = 0;
-  int rand_color = 0;
-
   if (NUMBER_OF_CANS < 50) {
-    int angRotateX_ = generate_random_int_number(360);
-    int angRotateY_ = generate_random_int_number(360);
-    int angRotateZ_ = generate_random_int_number(360);
+    int angRotateX_ = generate_random_int_number(0, 360);
+    int angRotateY_ = generate_random_int_number(0, 360);
+    int angRotateZ_ = generate_random_int_number(0, 360);
 
     angRotateX[NUMBER_OF_CANS] = angRotateX_;
     angRotateY[NUMBER_OF_CANS] = angRotateY_;
     angRotateZ[NUMBER_OF_CANS] = angRotateZ_;
 
-    int translateCanX_ = rand() % 10 - 5;
-    int translateCanY_ = rand() % 10 - 5;
-    int translateCanZ_ = rand() % 10 - 5;
+    int translateCanX_ = generate_random_int_number(-20, 20);
+    int translateCanY_ = generate_random_int_number(-20, 20);
+    int translateCanZ_ = generate_random_int_number(-20, 20);
 
     translateCanX[NUMBER_OF_CANS] = translateCanX_;
     incTranslateCanX[NUMBER_OF_CANS] = 0.1;
@@ -65,7 +61,7 @@ void generateCan() {
     translateCanZ[NUMBER_OF_CANS] = translateCanZ_;
     incTranslateCanZ[NUMBER_OF_CANS] = 0.1;
 
-    rand_texture = generate_random_int_number(NUMBER_OF_CAN_TEXTURES);
+    int rand_texture = generate_random_int_number(0, NUMBER_OF_CAN_TEXTURES);
 
     cans[NUMBER_OF_CANS].texture = rand_texture;
     NUMBER_OF_CANS++;
