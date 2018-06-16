@@ -1,35 +1,29 @@
 #ifndef RAIN_HEADER
 #define RAIN_HEADER
 
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#else
+#include <GL/gl.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <vector>
-#include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
+#include <math.h>
 #include <time.h>
 #include <vector>
 
 using namespace std;
 
 typedef struct {
-  // Life
-  bool alive;	// is the particle alive?
-  float life;	// particle lifespan
-  float fade; // decay
-  // color
-  float red;
-  float green;
-  float blue;
-  // Position/direction
+  bool alive;
+  float life;
+  float fade;
   float xpos;
   float ypos;
   float zpos;
-  // Velocity/Direction, only goes down in y dir
   float vel;
-  // Gravity
   float gravity;
 } particles;
 
