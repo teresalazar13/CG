@@ -29,7 +29,7 @@ void Rain::render_rain() {
   glBlendFunc(GL_SRC_ALPHA,GL_ONE);
   float x, y, z;
 
-  for (loop = 0; loop < 1000; loop = loop + 2) {
+  for (loop = 0; loop < NUMBER_OF_RAIN_PARTICLES; loop = loop + 2) {
 
     if (par_sys[loop].alive == true) {
       x = par_sys[loop].xpos;

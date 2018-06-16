@@ -33,6 +33,7 @@ void inicializa(void) {
   glDisable(GL_TEXTURE_2D);
 
   glEnable(GL_DEPTH_TEST);
+  rain.NUMBER_OF_RAIN_PARTICLES = 1000;
   rain.init_particles();
 }
 
@@ -218,7 +219,7 @@ void display(void){
   render.render_cubemap();
   createCans();
 
-  //rain.render_rain();
+  rain.render_rain();
   // Atualizacao
   glutSwapBuffers();
 }
@@ -227,6 +228,15 @@ void display(void){
 void keyboard (unsigned char key, int x, int y) {
   if (key == 'z') {
     generateCan();
+  }
+
+  if (key == '.') {
+    if (rain.NUMBER_OF_RAIN_PARTICLES == 1000) {
+      rain.NUMBER_OF_RAIN_PARTICLES = 0;
+    }
+    else {
+      rain.NUMBER_OF_RAIN_PARTICLES = 1000;
+    }
   }
 
   else if (key == '-') {

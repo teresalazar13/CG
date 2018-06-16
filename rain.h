@@ -14,8 +14,6 @@
 
 using namespace std;
 
-#define NUMBER_OF_RAIN_PARTICLES 1000
-
 typedef struct {
   // Life
   bool alive;	// is the particle alive?
@@ -37,6 +35,7 @@ typedef struct {
 
 class Rain {
   public:
+    int NUMBER_OF_RAIN_PARTICLES;
     particles par_sys[1000];
     void setup_particle(int i);
     void init_particles();
