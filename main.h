@@ -8,6 +8,7 @@
 #include <GLUT/glut.h>
 #include <math.h>
 #include <vector>
+#include <time.h>
 #include "materiais.h"
 #include "RgbImage.h"
 #include "render.h"

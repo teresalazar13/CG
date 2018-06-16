@@ -41,9 +41,9 @@ void generateCan() {
     cans[NUMBER_OF_CANS].angRotateY = angRotateY_;
     cans[NUMBER_OF_CANS].angRotateZ = angRotateZ_;
 
-    int translateCanX_ = rand() % 40 - 20;
-    int translateCanY_ = rand() % 40 - 20;
-    int translateCanZ_ = rand() % 40 - 20;
+    int translateCanX_ = rand() % 36 - xC;
+    int translateCanY_ = rand() % 36 - yC;
+    int translateCanZ_ = rand() % 36 - zC;
 
     cans[NUMBER_OF_CANS].translateCanX = translateCanX_;
     cans[NUMBER_OF_CANS].incTranslateCanX = 0.1;
@@ -69,8 +69,9 @@ void createCans() {
     cans[i].angRotateY = cans[i].angRotateY + incAngRotate;
     cans[i].angRotateZ = cans[i].angRotateZ + incAngRotate;
 
+
     // translate can accordingly
-    if (cans[i].translateCanY > yC || cans[i].translateCanY < -yC) {
+    if (cans[i].translateCanY > yC - 1.75 || cans[i].translateCanY < -yC + 1.75) {
       if (MODE == 1) {
         glDisable(GL_LIGHT0);
         glEnable(GL_LIGHT1);
@@ -79,7 +80,7 @@ void createCans() {
     }
     cans[i].translateCanY = cans[i].translateCanY + cans[i].incTranslateCanY;
 
-    if (cans[i].translateCanX > xC || cans[i].translateCanX < -xC) {
+    if (cans[i].translateCanX > xC - 1.75 || cans[i].translateCanX < -xC + 1.75) {
       if (MODE == 1) {
         glDisable(GL_LIGHT1);
         glEnable(GL_LIGHT2);
@@ -88,7 +89,7 @@ void createCans() {
     }
     cans[i].translateCanX = cans[i].translateCanX + cans[i].incTranslateCanX;
 
-    if (cans[i].translateCanZ > zC || cans[i].translateCanZ < -zC) {
+    if (cans[i].translateCanZ > zC - 1.75 || cans[i].translateCanZ < -zC + 1.75) {
       if (MODE == 1) {
         glDisable(GL_LIGHT2);
         glEnable(GL_LIGHT0);
@@ -170,12 +171,12 @@ void display(void){
   }
 
   // afasta do centro ao inicio
-  if (keyStates['p'] && rVisao < 20) {
+  if (keyStates['p'] && rVisao < xC) {
     rVisao += 0.02;
   }
 
   // modificar o ponto para onde o utilizar esta a olha no eixo dos x
-  if (keyStates['q'] && rVisao < 20) {
+  if (keyStates['q'] && rVisao < xC) {
     LOOK_X += -0.02;
   }
 
@@ -267,6 +268,7 @@ void Timer(int value){
 
 
 int main(int argc, char** argv){
+  srand(time(NULL));
   glutInit(&argc, argv);
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
   glutInitWindowSize (wScreen, hScreen);
